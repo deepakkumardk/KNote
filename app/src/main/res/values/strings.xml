@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">KNote</string>
+    <string name="note_title">Note Title</string>
+    <string name="note_content">Note Content</string>
+    <string name="save">Save</string>
+    <string name="alert_cancel">Cancel</string>
+    <string name="alert_discard">Discard</string>
+    <string name="alert_message">Are you sure you want to discard your changes?</string>
+    <string name="tools_note_item_content">My Note content goes here and here too we can also show max two lines</string>
+    <string name="tools_note_item_title">My Note Title</string>
+</resources>
