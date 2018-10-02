@@ -9,7 +9,7 @@ interface NoteDao {
     fun getAllNotes(): LiveData<List<Note>>
 
     @Query("SELECT * FROM notes")
-    fun getAllNotesList(): List<Note>
+    fun getAllNotesList(): MutableList<Note>
 
     @Query("SELECT * FROM notes WHERE id = :id")
     fun getNoteById(id: Int): LiveData<List<Note>>

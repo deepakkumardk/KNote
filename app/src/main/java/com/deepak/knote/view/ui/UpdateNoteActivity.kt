@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import com.deepak.knote.viewmodel.MainViewModel
 import com.deepak.knote.R
 import com.deepak.knote.service.db.Note
+import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_update_note.*
 import org.jetbrains.anko.*
 
@@ -53,7 +53,7 @@ class UpdateNoteActivity : AppCompatActivity() {
         val note = Note(id,title,content)
         if (validateInput(title,content)) {
             MainViewModel(application).updateNote(note)
-            toast("Notes updated successfully...")
+            toast("Note updated successfully...")
             finish()
             startActivity<MainActivity>()
         }else {

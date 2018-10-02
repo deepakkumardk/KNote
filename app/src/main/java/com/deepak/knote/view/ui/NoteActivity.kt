@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import com.deepak.knote.viewmodel.MainViewModel
 import com.deepak.knote.R
 import com.deepak.knote.service.db.Note
+import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import org.jetbrains.anko.*
 
@@ -38,7 +38,7 @@ class NoteActivity : AppCompatActivity() {
         val note = Note(noteTitle = title,noteContent = content)
         if (validateInput(title,content)) {
             MainViewModel(application).insertNote(note)
-            toast("Notes inserted successfully...")
+            toast("Note inserted successfully...")
             finish()
             startActivity<MainActivity>()
         }else {

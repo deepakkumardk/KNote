@@ -17,6 +17,7 @@ import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 const val NOTE_ID = "NOTE_ID"
 const val NOTE_TITLE = "NOTE_TITLE"
@@ -24,7 +25,7 @@ const val NOTE_CONTENT = "NOTE_CONTENT"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: KNoteAdapter
-    private lateinit var noteList : List<Note>
+    private lateinit var noteList: MutableList<Note>
     private lateinit var liveNoteList : LiveData<List<Note>>
     private lateinit var mainViewModel: MainViewModel
 
@@ -40,8 +41,6 @@ class MainActivity : AppCompatActivity() {
         liveNoteList = mainViewModel.getAllNotes()
         noteList = mainViewModel.getAllNotesList()
 
-//        val itemDecoration = DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL)
-//        recyclerView.addItemDecoration(itemDecoration)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.hasFixedSize()
         adapter = KNoteAdapter(noteList) { note -> onItemClick(note) }
@@ -54,19 +53,22 @@ class MainActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.layoutPosition
                 if (direction == ItemTouchHelper.RIGHT) {
-                    val swipedNote = viewHolder.itemView.tag as Note
-                    val id = swipedNote.id
-                    swipedNote.id = id
+                    val note = noteList[position]
+                    val sNote = Note(note.id, note.noteTitle, note.noteContent)
                     adapter.removeNote(position)
-                    mainViewModel.deleteNote(swipedNote)
+                    mainViewModel.deleteNote(sNote)
+                    toast("Note deleted successfully...")
                 }
             }
         }
-        @Suppress("UNUSED_VARIABLE")
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
-//        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        fab.onClick { startActivity<NoteActivity>() }
+        fab.onClick {
+            //            TODO("It's not the best practice (It's brothers too) also it causing the transition b/w activities grumpy")
+            finish()
+            startActivity<NoteActivity>()
+        }
 
     }
 
@@ -74,8 +76,17 @@ class MainActivity : AppCompatActivity() {
         val id = note?.id
         val title = note?.noteTitle.toString()
         val content = note?.noteContent.toString()
-
+        finish()
         startActivity<UpdateNoteActivity>(NOTE_ID to id, NOTE_TITLE to title, NOTE_CONTENT to content)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //it's not helping
+        mainViewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
+        mainViewModel.getAllNotes().observe(this, Observer {
+            Log.d("DEBUG", "note List changed")
+        })
     }
 
     override fun onBackPressed() {
