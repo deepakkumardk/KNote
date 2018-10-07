@@ -17,6 +17,7 @@ import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 const val NOTE_ID = "NOTE_ID"
 const val NOTE_TITLE = "NOTE_TITLE"
@@ -40,8 +41,6 @@ class MainActivity : AppCompatActivity() {
         liveNoteList = mainViewModel.getAllNotes()
         noteList = mainViewModel.getAllNotesList()
 
-//        val itemDecoration = DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL)
-//        recyclerView.addItemDecoration(itemDecoration)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.hasFixedSize()
         adapter = KNoteAdapter(noteList) { note -> onItemClick(note) }
@@ -52,19 +51,15 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.layoutPosition
                 if (direction == ItemTouchHelper.RIGHT) {
-                    val swipedNote = viewHolder.itemView.tag as Note
-                    val id = swipedNote.id
-                    swipedNote.id = id
-                    adapter.removeNote(position)
+                    val swipedNote = adapter.getNoteAt(viewHolder.adapterPosition)
                     mainViewModel.deleteNote(swipedNote)
+                    toast("Note Deleted Successfully")
                 }
             }
         }
-        @Suppress("UNUSED_VARIABLE")
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
-//        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
         fab.onClick { startActivity<NoteActivity>() }
 
