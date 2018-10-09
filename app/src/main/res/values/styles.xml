@@ -9,16 +9,27 @@
     </style>
 
     <style name="EditTextStyle" parent="Base.Widget.AppCompat.EditText">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:scrollbars">vertical</item>
-        <item name="android:textColorLink">@android:color/background_light</item>
-        <item name="android:textSize">20sp</item>
         <item name="android:padding">4dp</item>
-        <item name="android:inputType">textMultiLine</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColorLink">@android:color/background_light</item>
     </style>
 
-    <style name="EditTextTitle" parent="EditTextStyle">
+    <style name="TitleEditText" parent="EditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:inputType">text</item>
+    </style>
 
+    <style name="ContentEditText" parent="EditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:inputType">textMultiLine</item>
     </style>
 
 </resources>

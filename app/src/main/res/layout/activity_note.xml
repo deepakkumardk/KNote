@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,29 +10,34 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="6dp"
-        android:layout_margin="8dp">
+        android:layout_margin="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp">
+
         <EditText
             android:id="@+id/note_title"
+            style="@style/TitleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/note_title"
-            android:maxLines="2"
-            style="@style/EditTextStyle"/>
+            tools:ignore="Autofill"
+            tools:text="Note Title" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardElevation="4dp"
-        android:layout_margin="8dp">
+        android:layout_margin="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
         <EditText
             android:id="@+id/note_content"
+            style="@style/ContentEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/note_content"
-            android:gravity="start"
-            style="@style/EditTextStyle"/>
+            tools:ignore="Autofill" />
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

@@ -1,5 +1,5 @@
 # KNote
-A simple note taking app using Kotlin and Android Architechture components.
+A simple note taking app using Kotlin and Android Architecture components.
 
 
 <img alt="KNote-demo" src="App-demo-main.png" width="400" >
