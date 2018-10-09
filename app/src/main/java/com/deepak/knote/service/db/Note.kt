@@ -6,11 +6,11 @@ import android.support.annotation.NonNull
 
 @Entity(tableName = "notes")
 data class Note(
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
-    var id: Int = 0,
+        @PrimaryKey(autoGenerate = true)
+        @NonNull
+        var id: Int = 0,
 
-    var noteTitle: String,
+        var noteTitle: String,
 
-    var noteContent: String
+        var noteContent: String
 )

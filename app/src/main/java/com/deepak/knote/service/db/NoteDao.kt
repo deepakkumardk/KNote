@@ -6,13 +6,13 @@ import android.arch.persistence.room.*
 @Dao
 interface NoteDao {
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): LiveData<List<Note>>
+    fun getAllNotes(): LiveData<MutableList<Note>>
 
     @Query("SELECT * FROM notes")
-    fun getAllNotesList(): List<Note>
+    fun getAllNotesList(): MutableList<Note>
 
     @Query("SELECT * FROM notes WHERE id = :id")
-    fun getNoteById(id: Int): LiveData<List<Note>>
+    fun getNoteById(id: Int): LiveData<MutableList<Note>>
 
     @Insert
     fun insertNote(note: Note)

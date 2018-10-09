@@ -8,15 +8,15 @@ import com.deepak.knote.service.repository.NotesRepository
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var repository: NotesRepository = NotesRepository(application)
-    private var allNotes: LiveData<List<Note>> = repository.getAllNotes()
-    private var allNotesList: List<Note> = repository.getAllNotesList()
+    private var allNotes: LiveData<MutableList<Note>> = repository.getAllNotes()
+    private var allNotesList: MutableList<Note> = repository.getAllNotesList()
 
-    fun getAllNotes() : LiveData<List<Note>> = allNotes
+    fun getAllNotes(): LiveData<MutableList<Note>> = allNotes
 
-    fun getAllNotesList() : List<Note> = allNotesList
+    fun getAllNotesList(): MutableList<Note> = allNotesList
 
     @Suppress("unused")
-    fun getNoteById(id: Int) : LiveData<List<Note>> = repository.getNoteById(id)
+    fun getNoteById(id: Int): LiveData<MutableList<Note>> = repository.getNoteById(id)
 
     fun insertNote(note: Note) = repository.insertNote(note)
 

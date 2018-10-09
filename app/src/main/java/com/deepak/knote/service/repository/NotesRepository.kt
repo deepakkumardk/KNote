@@ -10,11 +10,11 @@ import kotlinx.coroutines.experimental.runBlocking
 import org.jetbrains.anko.doAsync
 
 class NotesRepository(context: Context) {
-    private var database : MyNoteDatabase? = MyNoteDatabase.getInstance(context)
-    private lateinit var liveNoteList : LiveData<List<Note>>
-    private lateinit var noteList : List<Note>
+    private var database: MyNoteDatabase? = MyNoteDatabase.getInstance(context)
+    private lateinit var liveNoteList: LiveData<MutableList<Note>>
+    private lateinit var noteList: MutableList<Note>
 
-    fun getAllNotes(): LiveData<List<Note>> {
+    fun getAllNotes(): LiveData<MutableList<Note>> {
         runBlocking {
             async(CommonPool) {
                 liveNoteList = database?.noteDao()?.getAllNotes()!!
@@ -24,7 +24,7 @@ class NotesRepository(context: Context) {
         return liveNoteList
     }
 
-    fun getAllNotesList(): List<Note> {
+    fun getAllNotesList(): MutableList<Note> {
         runBlocking {
             async(CommonPool) {
                 noteList = database?.noteDao()?.getAllNotesList()!!
@@ -34,7 +34,7 @@ class NotesRepository(context: Context) {
         return noteList
     }
 
-    fun getNoteById(id: Int): LiveData<List<Note>> {
+    fun getNoteById(id: Int): LiveData<MutableList<Note>> {
         runBlocking {
             async(CommonPool) {
                 liveNoteList = database?.noteDao()?.getNoteById(id)!!

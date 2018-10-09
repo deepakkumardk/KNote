@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import com.deepak.knote.viewmodel.MainViewModel
 import com.deepak.knote.R
 import com.deepak.knote.service.db.Note
+import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import org.jetbrains.anko.*
 
@@ -20,34 +20,36 @@ class NoteActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.note_menu,menu)
+        menuInflater.inflate(R.menu.note_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-            R.id.action_save_note -> insertNote()
-            else -> return false
+        return when (item?.itemId) {
+            R.id.action_save_note -> {
+                insertNote()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return  super.onOptionsItemSelected(item)
     }
 
     private fun insertNote() {
         val title = note_title.text.toString()
         val content = note_content.text.toString()
-        val note = Note(noteTitle = title,noteContent = content)
-        if (validateInput(title,content)) {
+        val note = Note(noteTitle = title, noteContent = content)
+        if (validateInput(title, content)) {
             MainViewModel(application).insertNote(note)
-            toast("Notes inserted successfully...")
+            toast("Note Saved...")
             finish()
-            startActivity<MainActivity>()
-        }else {
-            toast("Field is Empty...")
+            startActivity(intentFor<MainActivity>().clearTop())
+        } else {
+            toast("Field(s) is Empty...")
         }
     }
 
     private fun validateInput(title: String, content: String): Boolean {
-        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(content))
+        return !(TextUtils.isEmpty(title.trim()) && TextUtils.isEmpty(content.trim()))
     }
 
     override fun onBackPressed() {
@@ -62,7 +64,7 @@ class NoteActivity : AppCompatActivity() {
                 }
                 noButton { it.dismiss() }
             }.show()
-        }else {
+        } else {
             finish()
             super.onBackPressed()
         }

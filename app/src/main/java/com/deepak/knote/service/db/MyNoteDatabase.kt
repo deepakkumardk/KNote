@@ -14,7 +14,7 @@ abstract class MyNoteDatabase : RoomDatabase() {
         fun getInstance(context: Context): MyNoteDatabase? {
             if (INSTANCE == null) {
                 synchronized(MyNoteDatabase::class) {
-                    INSTANCE = Room.databaseBuilder(context,MyNoteDatabase::class.java,"notes_db").allowMainThreadQueries().fallbackToDestructiveMigration().build()
+                    INSTANCE = Room.databaseBuilder(context, MyNoteDatabase::class.java, "notes_db").allowMainThreadQueries().fallbackToDestructiveMigration().build()
                 }
             }
             return INSTANCE
