@@ -11,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.deepak.knote.R
 import com.deepak.knote.service.db.MyNoteDatabase
 import com.deepak.knote.service.db.Note
@@ -46,10 +48,12 @@ class MainActivity : AppCompatActivity() {
         liveNoteList = mainViewModel.getAllNotes()
         noteList = mainViewModel.getAllNotesList()
 
-        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView.hasFixedSize()
+        checkEmptyView()
+
+        recycler_view.layoutManager = LinearLayoutManager(applicationContext)
+        recycler_view.hasFixedSize()
         adapter = KNoteAdapter(noteList) { note, position -> onItemClick(note, position) }
-        recyclerView.adapter = adapter
+        recycler_view.adapter = adapter
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -63,12 +67,13 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.deleteNote(swipedNote)
                     noteList.removeAt(position)
                     adapter.notifyItemRemoved(position)
+                    checkEmptyView()
                     toast("Note Deleted Successfully")
                 }
             }
         }
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(recycler_view)
 
         fab.onClick {
             startActivity(intentFor<NoteActivity>().clearTop())
@@ -76,6 +81,16 @@ class MainActivity : AppCompatActivity() {
 //            startActivityForResult(intent, 101)
         }
 
+    }
+
+    private fun checkEmptyView() {
+        if (noteList.isEmpty()) {
+            recycler_view.visibility = GONE
+            empty_view.visibility = VISIBLE
+        } else {
+            recycler_view.visibility = VISIBLE
+            empty_view.visibility = GONE
+        }
     }
 
     private fun onItemClick(note: Note?, position: Int) {
