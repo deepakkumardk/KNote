@@ -26,7 +26,7 @@ class KNoteAdapter(private var noteList: List<Note>, private val listener: (Note
 
     fun getNoteAt(position: Int): Note = noteList[position]
 
-    fun setNotes(notes: List<Note>) {
+    fun setNotes(notes: MutableList<Note>) {
         noteList = notes
         notifyDataSetChanged()
     }

@@ -1,22 +1,24 @@
 package com.deepak.knote.view.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
-import com.deepak.knote.service.db.Note
-import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_note.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 
 class NoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,12 +39,12 @@ class NoteActivity : AppCompatActivity() {
     private fun insertNote() {
         val title = note_title.text.toString()
         val content = note_content.text.toString()
-        val note = Note(noteTitle = title, noteContent = content)
         if (validateInput(title, content)) {
-            MainViewModel(application).insertNote(note)
-            toast("Note Saved...")
+            val intent = Intent()
+            intent.putExtra(NOTE_TITLE, title)
+            intent.putExtra(NOTE_CONTENT, content)
+            setResult(Activity.RESULT_OK, intent)
             finish()
-            startActivity(intentFor<MainActivity>().clearTop())
         } else {
             toast("Field(s) is Empty...")
         }
@@ -58,15 +60,11 @@ class NoteActivity : AppCompatActivity() {
 
         if (title.isNotEmpty() || content.isNotEmpty()) {
             alert(getString(R.string.alert_message)) {
-                yesButton {
-                    finish()
-                    super.onBackPressed()
-                }
+                yesButton { finish() }
                 noButton { it.dismiss() }
             }.show()
         } else {
             finish()
-            super.onBackPressed()
         }
     }
 }

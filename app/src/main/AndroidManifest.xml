@@ -12,21 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.deepak.knote.view.ui.MainActivity">
+        <activity android:name=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.deepak.knote.view.ui.NoteActivity"
-            android:label="New Note">
+        <activity
+            android:name=".view.ui.NoteActivity"
+            android:label="New Note"
+            android:parentActivityName=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.deepak.knote.view.ui.UpdateNoteActivity"
-            android:label="Update Note">
+        <activity
+            android:name=".view.ui.UpdateNoteActivity"
+            android:label="Update Note"
+            android:parentActivityName=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

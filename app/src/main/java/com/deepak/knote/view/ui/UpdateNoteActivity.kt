@@ -1,15 +1,18 @@
 package com.deepak.knote.view.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
-import com.deepak.knote.service.db.Note
-import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_update_note.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 
 class UpdateNoteActivity : AppCompatActivity() {
     private var id: Int = 0
@@ -25,7 +28,6 @@ class UpdateNoteActivity : AppCompatActivity() {
         title = intent?.getStringExtra(NOTE_TITLE).toString()
         content = intent?.getStringExtra(NOTE_CONTENT).toString()
         position = intent.getIntExtra(POSITION, 0)
-        toast("adapter position: $position")
 
         loadNoteInfo()
     }
@@ -54,12 +56,14 @@ class UpdateNoteActivity : AppCompatActivity() {
     private fun updateNote() {
         val title = update_note_title.text.toString()
         val content = update_note_content.text.toString()
-        val note = Note(id, title, content)
         if (validateInput(title, content)) {
-            MainViewModel(application).updateNote(note)
-            toast("Note Saved")
+            val intent = Intent()
+            intent.putExtra(NOTE_ID, id)
+            intent.putExtra(NOTE_TITLE, title)
+            intent.putExtra(NOTE_CONTENT, content)
+            intent.putExtra(POSITION, position)
+            setResult(Activity.RESULT_OK, intent)
             finish()
-            startActivity(intentFor<MainActivity>().clearTop())
         } else {
             toast("Field(s) is Empty...")
         }
@@ -77,15 +81,11 @@ class UpdateNoteActivity : AppCompatActivity() {
             finish()
         } else if (title.isNotEmpty() || content.isNotEmpty()) {
             alert(getString(R.string.alert_message)) {
-                yesButton {
-                    finish()
-                    super.onBackPressed()
-                }
+                yesButton { finish() }
                 noButton { it.dismiss() }
             }.show()
         } else {
             finish()
-            super.onBackPressed()
         }
     }
 }
