@@ -4,12 +4,13 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.deepak.knote.R
@@ -42,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             adapter.setNotes(it as MutableList<Note>)
             noteList = it
             checkEmptyView()
-            Log.d("DEBUG", "note List changed")
         })
 
         noteList = mainViewModel.getAllNotesList()
@@ -75,7 +75,12 @@ class MainActivity : AppCompatActivity() {
 
         fab.onClick {
             val intent = Intent(this@MainActivity, NoteActivity::class.java)
-            startActivityForResult(intent, RC_NEW_NOTE)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity)
+                startActivityForResult(intent, RC_NEW_NOTE, options.toBundle())
+            } else {
+                startActivityForResult(intent, RC_NEW_NOTE)
+            }
         }
 
     }
@@ -100,7 +105,13 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(NOTE_TITLE, title)
         intent.putExtra(NOTE_CONTENT, content)
         intent.putExtra(POSITION, position)
-        startActivityForResult(intent, RC_UPDATE_NOTE)
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity)
+            startActivityForResult(intent, RC_UPDATE_NOTE, options.toBundle())
+        } else {
+            startActivityForResult(intent, RC_UPDATE_NOTE)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -121,6 +132,7 @@ class MainActivity : AppCompatActivity() {
                 val note = Note(id, title, content)
                 mainViewModel.updateNote(note)
                 adapter.notifyItemChanged(position)
+                recycler_view.scrollToPosition(position)
                 toast("Note Saved")
             }
         }

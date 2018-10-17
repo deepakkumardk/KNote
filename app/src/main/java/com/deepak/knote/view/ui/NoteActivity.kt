@@ -32,6 +32,10 @@ class NoteActivity : AppCompatActivity() {
                 insertNote()
                 true
             }
+            R.id.home -> {
+                supportFinishAfterTransition()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -40,11 +44,12 @@ class NoteActivity : AppCompatActivity() {
         val title = note_title.text.toString()
         val content = note_content.text.toString()
         if (validateInput(title, content)) {
+            hideSoftKeyboard()
             val intent = Intent()
             intent.putExtra(NOTE_TITLE, title)
             intent.putExtra(NOTE_CONTENT, content)
             setResult(Activity.RESULT_OK, intent)
-            finish()
+            supportFinishAfterTransition()
         } else {
             toast("Field(s) is Empty...")
         }
@@ -60,11 +65,11 @@ class NoteActivity : AppCompatActivity() {
 
         if (title.isNotEmpty() || content.isNotEmpty()) {
             alert(getString(R.string.alert_message)) {
-                yesButton { finish() }
+                yesButton { supportFinishAfterTransition() }
                 noButton { it.dismiss() }
             }.show()
         } else {
-            finish()
+            supportFinishAfterTransition()
         }
     }
 }

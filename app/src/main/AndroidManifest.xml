@@ -21,7 +21,8 @@
         <activity
             android:name=".view.ui.NoteActivity"
             android:label="New Note"
-            android:parentActivityName=".view.ui.MainActivity">
+            android:parentActivityName=".view.ui.MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -30,7 +31,8 @@
         <activity
             android:name=".view.ui.UpdateNoteActivity"
             android:label="Update Note"
-            android:parentActivityName=".view.ui.MainActivity">
+            android:parentActivityName=".view.ui.MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

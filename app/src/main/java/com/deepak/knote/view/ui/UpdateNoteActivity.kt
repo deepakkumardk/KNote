@@ -7,12 +7,10 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import com.deepak.knote.R
 import kotlinx.android.synthetic.main.activity_update_note.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.yesButton
+import org.jetbrains.anko.*
 
 class UpdateNoteActivity : AppCompatActivity() {
     private var id: Int = 0
@@ -43,6 +41,10 @@ class UpdateNoteActivity : AppCompatActivity() {
                 updateNote()
                 true
             }
+            R.id.home -> {
+                supportFinishAfterTransition()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -50,20 +52,21 @@ class UpdateNoteActivity : AppCompatActivity() {
     private fun loadNoteInfo() {
         update_note_title.setText(title)
         update_note_content.setText(content)
-        update_note_content.selectionEnd
+        update_note_title.selectionEnd
     }
 
     private fun updateNote() {
         val title = update_note_title.text.toString()
         val content = update_note_content.text.toString()
         if (validateInput(title, content)) {
+            hideSoftKeyboard()
             val intent = Intent()
             intent.putExtra(NOTE_ID, id)
             intent.putExtra(NOTE_TITLE, title)
             intent.putExtra(NOTE_CONTENT, content)
             intent.putExtra(POSITION, position)
             setResult(Activity.RESULT_OK, intent)
-            finish()
+            supportFinishAfterTransition()
         } else {
             toast("Field(s) is Empty...")
         }
@@ -81,11 +84,15 @@ class UpdateNoteActivity : AppCompatActivity() {
             finish()
         } else if (title.isNotEmpty() || content.isNotEmpty()) {
             alert(getString(R.string.alert_message)) {
-                yesButton { finish() }
+                yesButton { supportFinishAfterTransition() }
                 noButton { it.dismiss() }
             }.show()
         } else {
-            finish()
+            supportFinishAfterTransition()
         }
     }
+}
+
+fun AppCompatActivity.hideSoftKeyboard() {
+    inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 }
