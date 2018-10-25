@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         mainViewModel.getAllNotes().observe(this, Observer {
-            adapter.setNotes(it as MutableList<Note>)
+            adapter.submitList(it as MutableList<Note>)
             noteList = it
             checkEmptyView()
         })
@@ -48,9 +48,9 @@ class MainActivity : AppCompatActivity() {
         noteList = mainViewModel.getAllNotesList()
         checkEmptyView()
 
+        adapter = KNoteAdapter(noteList) { note, position -> onItemClick(note, position) }
         recycler_view.layoutManager = LinearLayoutManager(applicationContext)
         recycler_view.hasFixedSize()
-        adapter = KNoteAdapter(noteList) { note, position -> onItemClick(note, position) }
         recycler_view.adapter = adapter
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.deleteNote(swipedNote)
                     noteList.removeAt(position)
                     adapter.notifyItemRemoved(position)
+                    adapter.submitList(noteList)
                     checkEmptyView()
                     toast("Note Deleted Successfully")
                 }
