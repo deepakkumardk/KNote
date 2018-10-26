@@ -19,10 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.ui.NoteActivity"
+            android:name=".view.ui.NewNoteActivity"
             android:label="New Note"
-            android:parentActivityName=".view.ui.MainActivity"
-            android:windowSoftInputMode="stateHidden">
+            android:parentActivityName=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

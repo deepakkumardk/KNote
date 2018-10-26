@@ -7,11 +7,17 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
 import com.deepak.knote.R
+import com.deepak.knote.util.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_update_note.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 
+/**
+ * Activity to update note
+ */
 class UpdateNoteActivity : AppCompatActivity() {
     private var id: Int = 0
     private var title: String? = null
@@ -21,11 +27,6 @@ class UpdateNoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_note)
-
-        id = intent.getIntExtra(NOTE_ID, 0)
-        title = intent?.getStringExtra(NOTE_TITLE).toString()
-        content = intent?.getStringExtra(NOTE_CONTENT).toString()
-        position = intent.getIntExtra(POSITION, 0)
 
         loadNoteInfo()
     }
@@ -50,6 +51,11 @@ class UpdateNoteActivity : AppCompatActivity() {
     }
 
     private fun loadNoteInfo() {
+        id = intent.getIntExtra(NOTE_ID, 0)
+        title = intent?.getStringExtra(NOTE_TITLE).toString()
+        content = intent?.getStringExtra(NOTE_CONTENT).toString()
+        position = intent.getIntExtra(POSITION, 0)
+
         update_note_title.setText(title)
         update_note_content.setText(content)
         update_note_title.selectionEnd
@@ -93,6 +99,3 @@ class UpdateNoteActivity : AppCompatActivity() {
     }
 }
 
-fun AppCompatActivity.hideSoftKeyboard() {
-    inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-}

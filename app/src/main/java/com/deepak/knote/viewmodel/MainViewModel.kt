@@ -6,6 +6,10 @@ import android.arch.lifecycle.LiveData
 import com.deepak.knote.service.db.Note
 import com.deepak.knote.service.repository.NotesRepository
 
+/**
+ * The ViewModel class for the LiveData implementation that will
+ * observe all the changes to the list of note and then update it.
+ */
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var repository: NotesRepository = NotesRepository(application)
     private var allNotes: LiveData<MutableList<Note>> = repository.getAllNotes()

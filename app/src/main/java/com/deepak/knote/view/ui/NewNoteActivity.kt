@@ -8,13 +8,17 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
+import com.deepak.knote.util.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_note.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 
-class NoteActivity : AppCompatActivity() {
+/**
+ * Activity to write new note
+ */
+class NewNoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +67,7 @@ class NoteActivity : AppCompatActivity() {
         val title = note_title.text.toString()
         val content = note_content.text.toString()
 
-        if (title.isNotEmpty() || content.isNotEmpty()) {
+        if (title.isNotBlank() || content.isNotBlank()) {
             alert(getString(R.string.alert_message)) {
                 yesButton { supportFinishAfterTransition() }
                 noButton { it.dismiss() }

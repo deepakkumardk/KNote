@@ -9,11 +9,17 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.jetbrains.anko.doAsync
 
+/**
+ * Repository class for the implementation of the Dao functions
+ */
 class NotesRepository(context: Context) {
     private var database: MyNoteDatabase? = MyNoteDatabase.getInstance(context)
     private lateinit var liveNoteList: LiveData<MutableList<Note>>
     private lateinit var noteList: MutableList<Note>
 
+    /**
+     * Retrieve all the notes from the database with live data
+     */
     fun getAllNotes(): LiveData<MutableList<Note>> {
         runBlocking {
             async(CommonPool) {

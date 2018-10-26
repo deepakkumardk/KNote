@@ -11,9 +11,15 @@ import com.deepak.knote.service.db.Note
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class KNoteAdapter(private var noteList: List<Note>,
-                   private val listener: (Note, Int) -> Unit) :
+/**
+ * The Adapter for the RecyclerView to view all notes
+ * This adapter class extending the ListAdapter
+ * (not the RecyclerView.Adapter class because of the DiffUtil class)
+ * ListAdapter is made on the top of DiffUtil class to provide the smooth animation
+ */
+class KNoteAdapter(private val listener: (Note, Int) -> Unit) :
         ListAdapter<Note, KNoteAdapter.KNoteViewHolder>(DiffUtilCallback()) {
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): KNoteViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_note, viewGroup, false)
         return KNoteViewHolder(view)
