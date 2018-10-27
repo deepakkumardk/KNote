@@ -1,11 +1,12 @@
 # KNote
 A simple note taking app using Kotlin and Android Architecture components.
 
+:star: A simple interface to create and update note <br>
+:star: Swipe to delete the note <br>
+:star: Used Material view to create the app <br>
 
-<img alt="KNote-demo" src="App-demo-main.png" width="400" >
 
-
-<img alt="KNote-demo" src="App-demo-new-note.png" width="400">
+<img alt="KNote-demo" src="App-demo-main.png" width="40%" align="center" hspace="20" > <img alt="KNote-demo" src="App-demo-new-note.png" width="40%"  align="center" hspace="20" >
 
 License
 -------
