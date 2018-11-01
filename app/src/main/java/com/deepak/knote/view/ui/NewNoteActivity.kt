@@ -8,6 +8,8 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
+import com.deepak.knote.util.NOTE_CONTENT
+import com.deepak.knote.util.NOTE_TITLE
 import com.deepak.knote.util.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_note.*
 import org.jetbrains.anko.alert

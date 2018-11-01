@@ -8,7 +8,7 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
-import com.deepak.knote.util.hideSoftKeyboard
+import com.deepak.knote.util.*
 import kotlinx.android.synthetic.main.activity_update_note.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.noButton

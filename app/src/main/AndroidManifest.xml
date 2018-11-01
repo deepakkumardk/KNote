@@ -15,6 +15,7 @@
         <activity android:name=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,6 +25,7 @@
             android:parentActivityName=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -34,9 +36,18 @@
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.ui.AboutActivity"
+            android:parentActivityName=".view.ui.MainActivity"
+            android:theme="@style/AppTheme.MaterialAboutActivity" />
+        <activity
+            android:name=".view.ui.LicenseActivity"
+            android:label="Licenses"
+            android:parentActivityName=".view.ui.AboutActivity" />
     </application>
 
 </manifest>

@@ -15,23 +15,18 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.view.Menu
+import android.view.MenuItem
 import com.deepak.knote.R
 import com.deepak.knote.service.db.MyNoteDatabase
 import com.deepak.knote.service.db.Note
-import com.deepak.knote.util.hide
-import com.deepak.knote.util.show
+import com.deepak.knote.util.*
 import com.deepak.knote.view.adapter.KNoteAdapter
 import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-
-const val NOTE_ID = "NOTE_ID"
-const val NOTE_TITLE = "NOTE_TITLE"
-const val NOTE_CONTENT = "NOTE_CONTENT"
-const val POSITION = "POSITION"
-const val RC_NEW_NOTE = 101
-const val RC_UPDATE_NOTE = 102
 
 /**
  * Main Launcher activity we can see all the  notes in a recycler view
@@ -94,9 +89,10 @@ class MainActivity : AppCompatActivity() {
                     val margin = (cellHeight - iconHeight) / 2
                     val iconTop = item.top + margin
                     val iconBottom = iconTop + iconHeight
-                    val iconRight = 32 + iconWidth
+                    val iconLeft = 48
+                    val iconRight = iconLeft + iconWidth
 
-                    icon.setBounds(32, iconTop, iconRight, iconBottom)
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                     icon.draw(c)
 
                     //set the alpha animation on swipe
@@ -161,6 +157,26 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, RC_UPDATE_NOTE, options.toBundle())
         } else {
             startActivityForResult(intent, RC_UPDATE_NOTE)
+        }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_about_app -> {
+                startActivity<AboutActivity>()
+                true
+            }
+            R.id.home -> {
+                supportFinishAfterTransition()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
