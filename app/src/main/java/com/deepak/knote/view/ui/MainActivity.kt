@@ -29,7 +29,7 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 /**
- * Main Launcher activity we can see all the  notes in a recycler view
+ * Main Launcher activity where we can see all the saved notes in a recycler view
  */
 class MainActivity : AppCompatActivity() {
     private lateinit var noteAdapter: KNoteAdapter
@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         noteList = mainViewModel.getAllNotesList()
         noteAdapter = KNoteAdapter { note, position -> onItemClick(note, position) }
         recycler_view.apply {
-            recycler_view.hasFixedSize()
-            recycler_view.adapter = noteAdapter
+            hasFixedSize()
+            adapter = noteAdapter
             layoutManager = LinearLayoutManager(applicationContext)
         }
 
@@ -102,11 +102,6 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 }
-            }
-
-            override fun onMoved(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, fromPos: Int, target: RecyclerView.ViewHolder, toPos: Int, x: Int, y: Int) {
-                super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
-                toast("on move")
             }
         }
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
@@ -183,16 +178,14 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
+            val title = data.getStringExtra(NOTE_TITLE).toString()
+            val content = data.getStringExtra(NOTE_CONTENT).toString()
             if (requestCode == RC_NEW_NOTE) {
-                val title = data.getStringExtra(NOTE_TITLE).toString()
-                val content = data.getStringExtra(NOTE_CONTENT).toString()
                 val note = Note(noteTitle = title, noteContent = content)
                 mainViewModel.insertNote(note)
                 toast("Note Saved...")
             } else if (requestCode == RC_UPDATE_NOTE) {
                 val id = data.getIntExtra(NOTE_ID, 0)
-                val title = data.getStringExtra(NOTE_TITLE).toString()
-                val content = data.getStringExtra(NOTE_CONTENT).toString()
                 val position = data.getIntExtra(POSITION, 0)
                 val note = Note(id, title, content)
                 mainViewModel.updateNote(note)

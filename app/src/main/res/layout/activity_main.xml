@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_note" />
 
-
     <LinearLayout
         android:id="@+id/empty_view"
         android:layout_width="match_parent"

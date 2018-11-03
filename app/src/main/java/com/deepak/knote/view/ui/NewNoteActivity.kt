@@ -4,21 +4,18 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
 import com.deepak.knote.util.NOTE_CONTENT
 import com.deepak.knote.util.NOTE_TITLE
 import com.deepak.knote.util.hideSoftKeyboard
+import com.deepak.knote.util.validateInput
 import kotlinx.android.synthetic.main.activity_note.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.yesButton
 
 /**
- * Activity to write new note
+ * Activity to write a new note
  */
 class NewNoteActivity : AppCompatActivity() {
 
@@ -57,25 +54,17 @@ class NewNoteActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, intent)
             supportFinishAfterTransition()
         } else {
-            toast("Field(s) is Empty...")
+            toast(R.string.empty_alert_message)
         }
-    }
-
-    private fun validateInput(title: String, content: String): Boolean {
-        return !(TextUtils.isEmpty(title.trim()) && TextUtils.isEmpty(content.trim()))
     }
 
     override fun onBackPressed() {
         val title = note_title.text.toString()
         val content = note_content.text.toString()
 
-        if (title.isNotBlank() || content.isNotBlank()) {
-            alert(getString(R.string.alert_message)) {
-                yesButton { supportFinishAfterTransition() }
-                noButton { it.dismiss() }
-            }.show()
-        } else {
-            supportFinishAfterTransition()
+        when {
+            title.isNotBlank() || content.isNotBlank() -> insertNote()
+            else -> supportFinishAfterTransition()
         }
     }
 }

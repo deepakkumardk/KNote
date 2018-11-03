@@ -4,16 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
 import com.deepak.knote.util.*
 import kotlinx.android.synthetic.main.activity_update_note.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.yesButton
 
 /**
  * Activity to update note
@@ -57,8 +53,8 @@ class UpdateNoteActivity : AppCompatActivity() {
         position = intent.getIntExtra(POSITION, 0)
 
         update_note_title.setText(title)
-        update_note_content.setText(content)
         update_note_title.selectionEnd
+        update_note_content.setText(content)
     }
 
     private fun updateNote() {
@@ -74,28 +70,18 @@ class UpdateNoteActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, intent)
             supportFinishAfterTransition()
         } else {
-            toast("Field(s) is Empty...")
+            toast(R.string.empty_alert_message)
         }
-    }
-
-    private fun validateInput(title: String, content: String): Boolean {
-        return !(TextUtils.isEmpty(title.trim()) && TextUtils.isEmpty(content.trim()))
     }
 
     override fun onBackPressed() {
         val title = update_note_title.text.toString()
         val content = update_note_content.text.toString()
 
-        if (this.content == content) {
-            finish()
-        } else if (title.isNotEmpty() || content.isNotEmpty()) {
-            alert(getString(R.string.alert_message)) {
-                yesButton { supportFinishAfterTransition() }
-                noButton { it.dismiss() }
-            }.show()
-        } else {
-            supportFinishAfterTransition()
+        when {
+            this.title == title && this.content == content -> supportFinishAfterTransition()
+            title.isNotEmpty() || content.isNotEmpty() -> updateNote()
+            else -> supportFinishAfterTransition()
         }
     }
 }
-
