@@ -19,11 +19,12 @@ import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
 import com.deepak.knote.service.db.MyNoteDatabase
-import com.deepak.knote.service.db.Note
+import com.deepak.knote.service.db.model.Note
 import com.deepak.knote.util.*
 import com.deepak.knote.view.adapter.KNoteAdapter
 import com.deepak.knote.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.empty_view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -64,7 +65,8 @@ class MainActivity : AppCompatActivity() {
                 if (direction == ItemTouchHelper.RIGHT) {
                     val position = viewHolder.adapterPosition
                     val swipedNote = noteAdapter.getNoteAt(position)
-                    mainViewModel.deleteNote(swipedNote)
+                    swipedNote.isTrashed = true
+//                    mainViewModel.deleteNote(swipedNote)
                     noteList.removeAt(position)
                     noteAdapter.notifyItemRemoved(position)
                     noteAdapter.submitList(noteList)
@@ -155,7 +157,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -163,6 +164,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
+            R.id.action_trash -> {
+                startActivity<TrashActivity>()
+                true
+            }
             R.id.action_about_app -> {
                 startActivity<AboutActivity>()
                 true
@@ -180,14 +185,15 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && data != null) {
             val title = data.getStringExtra(NOTE_TITLE).toString()
             val content = data.getStringExtra(NOTE_CONTENT).toString()
+            val isTrashed = data.getBooleanExtra(IS_TRASHED, false)
             if (requestCode == RC_NEW_NOTE) {
-                val note = Note(noteTitle = title, noteContent = content)
+                val note = Note(noteTitle = title, noteContent = content, isTrashed = isTrashed)
                 mainViewModel.insertNote(note)
                 toast("Note Saved...")
             } else if (requestCode == RC_UPDATE_NOTE) {
                 val id = data.getIntExtra(NOTE_ID, 0)
                 val position = data.getIntExtra(POSITION, 0)
-                val note = Note(id, title, content)
+                val note = Note(id, title, content, isTrashed)
                 mainViewModel.updateNote(note)
                 noteAdapter.notifyItemChanged(position)
                 recycler_view.scrollToPosition(position)

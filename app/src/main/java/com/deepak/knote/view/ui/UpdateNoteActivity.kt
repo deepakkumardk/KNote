@@ -18,6 +18,7 @@ class UpdateNoteActivity : AppCompatActivity() {
     private var id: Int = 0
     private var title: String? = null
     private var content: String? = null
+    private var isTrashed: Boolean = false
     private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,7 @@ class UpdateNoteActivity : AppCompatActivity() {
         id = intent.getIntExtra(NOTE_ID, 0)
         title = intent?.getStringExtra(NOTE_TITLE).toString()
         content = intent?.getStringExtra(NOTE_CONTENT).toString()
+        isTrashed = intent?.getBooleanExtra(IS_TRASHED, false)!!
         position = intent.getIntExtra(POSITION, 0)
 
         update_note_title.setText(title)
@@ -66,6 +68,7 @@ class UpdateNoteActivity : AppCompatActivity() {
             intent.putExtra(NOTE_ID, id)
             intent.putExtra(NOTE_TITLE, title)
             intent.putExtra(NOTE_CONTENT, content)
+            intent.putExtra(IS_TRASHED, isTrashed)
             intent.putExtra(POSITION, position)
             setResult(Activity.RESULT_OK, intent)
             supportFinishAfterTransition()

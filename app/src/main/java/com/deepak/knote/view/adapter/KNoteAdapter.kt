@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.deepak.knote.R
-import com.deepak.knote.service.db.Note
+import com.deepak.knote.service.db.model.Note
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -27,15 +27,15 @@ class KNoteAdapter(private val listener: (Note, Int) -> Unit) :
 
     override fun onBindViewHolder(viewHolder: KNoteViewHolder, position: Int) {
         val note = getItem(position)
-        viewHolder.noteTitle?.text = note.noteTitle
-        viewHolder.noteContent?.text = note.noteContent
+        viewHolder.noteTitle.text = note.noteTitle
+        viewHolder.noteContent.text = note.noteContent
         viewHolder.itemView.onClick { listener(note, position) }
     }
 
     fun getNoteAt(position: Int): Note = getItem(position)
 
     class KNoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var noteTitle: TextView? = itemView.find(R.id.item_note_title) as TextView
-        var noteContent: TextView? = itemView.find(R.id.item_note_content) as TextView
+        var noteTitle = itemView.find<TextView>(R.id.item_note_title)
+        var noteContent = itemView.find<TextView>(R.id.item_note_content)
     }
 }

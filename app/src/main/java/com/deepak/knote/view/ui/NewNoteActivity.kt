@@ -7,10 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.deepak.knote.R
-import com.deepak.knote.util.NOTE_CONTENT
-import com.deepak.knote.util.NOTE_TITLE
-import com.deepak.knote.util.hideSoftKeyboard
-import com.deepak.knote.util.validateInput
+import com.deepak.knote.util.*
 import kotlinx.android.synthetic.main.activity_note.*
 import org.jetbrains.anko.toast
 
@@ -51,6 +48,7 @@ class NewNoteActivity : AppCompatActivity() {
             val intent = Intent()
             intent.putExtra(NOTE_TITLE, title)
             intent.putExtra(NOTE_CONTENT, content)
+            intent.putExtra(IS_TRASHED, false)
             setResult(Activity.RESULT_OK, intent)
             supportFinishAfterTransition()
         } else {

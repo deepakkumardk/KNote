@@ -13,4 +13,5 @@
     <string name="empty_text_view">No Note Found \n Click + to Add Note</string>
     <string name="delete_icon">Delete Icon</string>
     <string name="about">About</string>
+    <string name="trash">Trash</string>
 </resources>

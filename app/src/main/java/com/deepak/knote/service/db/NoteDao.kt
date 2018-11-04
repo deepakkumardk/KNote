@@ -2,6 +2,7 @@ package com.deepak.knote.service.db
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
+import com.deepak.knote.service.db.model.Note
 
 /**
  * The Data Access Object(Dao) implementation for the Room

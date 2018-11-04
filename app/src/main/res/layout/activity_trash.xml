@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray"
-    tools:context=".view.ui.MainActivity">
+    tools:context=".view.ui.TrashActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/recycler_view_trash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,14 +17,5 @@
         tools:listitem="@layout/item_note" />
 
     <include layout="@layout/empty_view" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/colorAccent"
-        app:srcCompat="@drawable/ic_add" />
 
 </android.support.design.widget.CoordinatorLayout>

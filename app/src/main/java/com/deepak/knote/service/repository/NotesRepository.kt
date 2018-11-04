@@ -3,7 +3,7 @@ package com.deepak.knote.service.repository
 import android.arch.lifecycle.LiveData
 import android.content.Context
 import com.deepak.knote.service.db.MyNoteDatabase
-import com.deepak.knote.service.db.Note
+import com.deepak.knote.service.db.model.Note
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
