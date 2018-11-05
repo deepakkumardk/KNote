@@ -7,7 +7,7 @@ import com.deepak.knote.service.db.model.Note
  * DiffUtil class which takes care of all the data insertion and deletion
  * to provide smooth transition
  */
-class DiffUtilCallback : DiffUtil.ItemCallback<Note>() {
+class DiffUtilMain : DiffUtil.ItemCallback<Note>() {
     override fun areItemsTheSame(oldNote: Note, newNote: Note): Boolean {
         return oldNote.id == newNote.id
     }

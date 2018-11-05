@@ -17,7 +17,7 @@ class TrashRepository(context: Context) {
     /**
      * Retrieve all the trashed notes from the database with live data
      */
-    fun getAllTrashNotes(): LiveData<MutableList<TrashNote>> {
+    fun getLiveTrashNotes(): LiveData<MutableList<TrashNote>> {
         runBlocking {
             async(CommonPool) {
                 liveTrashList = database?.trashDao()?.getLiveTrashNotes()!!
@@ -27,7 +27,7 @@ class TrashRepository(context: Context) {
         return liveTrashList
     }
 
-    fun getAllTrashNotesList(): MutableList<TrashNote> {
+    fun getTrashNotesList(): MutableList<TrashNote> {
         runBlocking {
             async(CommonPool) {
                 trashList = database?.trashDao()?.getTrashNotesList()!!
@@ -37,9 +37,9 @@ class TrashRepository(context: Context) {
         return trashList
     }
 
-    fun insertNote(note: TrashNote) = doAsync { database?.trashDao()?.insert(note) }
+    fun insertTrash(note: TrashNote) = doAsync { database?.trashDao()?.insert(note) }
 
-    fun updateNote(note: TrashNote) = doAsync { database?.trashDao()?.update(note) }
+    fun updateTrash(note: TrashNote) = doAsync { database?.trashDao()?.update(note) }
 
-    fun deleteNote(note: TrashNote) = doAsync { database?.trashDao()?.delete(note) }
+    fun deleteTrash(note: TrashNote) = doAsync { database?.trashDao()?.delete(note) }
 }

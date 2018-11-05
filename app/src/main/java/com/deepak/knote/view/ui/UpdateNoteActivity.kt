@@ -18,8 +18,8 @@ class UpdateNoteActivity : AppCompatActivity() {
     private var id: Int = 0
     private var title: String? = null
     private var content: String? = null
-    private var isTrashed: Boolean = false
     private var position: Int = 0
+    private var requestCode: Int = 102
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +30,9 @@ class UpdateNoteActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.note_menu, menu)
+        if (requestCode == RC_TRASH_NOTE) {
+            menu?.findItem(R.id.action_save_note)?.isVisible = false
+        }
         return true
     }
 
@@ -51,8 +54,14 @@ class UpdateNoteActivity : AppCompatActivity() {
         id = intent.getIntExtra(NOTE_ID, 0)
         title = intent?.getStringExtra(NOTE_TITLE).toString()
         content = intent?.getStringExtra(NOTE_CONTENT).toString()
-        isTrashed = intent?.getBooleanExtra(IS_TRASHED, false)!!
         position = intent.getIntExtra(POSITION, 0)
+        requestCode = intent.getIntExtra(RC_ACTIVITY, RC_UPDATE_NOTE)
+
+        if (requestCode == RC_TRASH_NOTE) {
+            update_note_title.isEnabled = false
+            update_note_content.isEnabled = false
+            invalidateOptionsMenu()
+        }
 
         update_note_title.setText(title)
         update_note_title.selectionEnd
@@ -68,7 +77,6 @@ class UpdateNoteActivity : AppCompatActivity() {
             intent.putExtra(NOTE_ID, id)
             intent.putExtra(NOTE_TITLE, title)
             intent.putExtra(NOTE_CONTENT, content)
-            intent.putExtra(IS_TRASHED, isTrashed)
             intent.putExtra(POSITION, position)
             setResult(Activity.RESULT_OK, intent)
             supportFinishAfterTransition()

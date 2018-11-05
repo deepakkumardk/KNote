@@ -9,31 +9,31 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.deepak.knote.R
-import com.deepak.knote.service.db.model.Note
+import com.deepak.knote.service.db.model.TrashNote
 import com.deepak.knote.util.*
-import com.deepak.knote.view.adapter.KNoteAdapter
-import com.deepak.knote.viewmodel.MainViewModel
+import com.deepak.knote.view.adapter.TrashAdapter
+import com.deepak.knote.viewmodel.TrashViewModel
 import kotlinx.android.synthetic.main.activity_trash.*
 import kotlinx.android.synthetic.main.empty_view.*
 
 class TrashActivity : AppCompatActivity() {
-    private lateinit var trashAdapter: KNoteAdapter
-    private lateinit var trashList: MutableList<Note>
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var trashAdapter: TrashAdapter
+    private lateinit var trashList: MutableList<TrashNote>
+    private lateinit var trashViewModel: TrashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trash)
 
-        mainViewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
-        mainViewModel.getAllTrashNotes().observe(this, Observer {
-            trashAdapter.submitList(it as MutableList<Note>)
+        trashViewModel = ViewModelProviders.of(this)[TrashViewModel::class.java]
+        trashViewModel.getLiveTrashNotes().observe(this, Observer {
+            trashAdapter.submitList(it as MutableList<TrashNote>)
             trashList = it
             checkEmptyView()
         })
 
-        trashList = mainViewModel.getAllTrashNotesList()
-        trashAdapter = KNoteAdapter { note, position -> onItemClick(note, position) }
+        trashList = trashViewModel.getTrashNotesList()
+        trashAdapter = TrashAdapter { note, position -> onItemClick(note, position) }
         recycler_view_trash.apply {
             hasFixedSize()
             adapter = trashAdapter
@@ -60,7 +60,7 @@ class TrashActivity : AppCompatActivity() {
      * Open activity to edit note with transition
      * TODO("decide if it's needed of not")
      */
-    private fun onItemClick(note: Note?, position: Int) {
+    private fun onItemClick(note: TrashNote?, position: Int) {
         val id = note?.id
         val title = note?.noteTitle.toString()
         val content = note?.noteContent.toString()
@@ -70,12 +70,13 @@ class TrashActivity : AppCompatActivity() {
         intent.putExtra(NOTE_TITLE, title)
         intent.putExtra(NOTE_CONTENT, content)
         intent.putExtra(POSITION, position)
+        intent.putExtra(RC_ACTIVITY, RC_TRASH_NOTE)
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@TrashActivity)
-            startActivityForResult(intent, RC_UPDATE_NOTE, options.toBundle())
+            startActivityForResult(intent, RC_TRASH_NOTE, options.toBundle())
         } else {
-            startActivityForResult(intent, RC_UPDATE_NOTE)
+            startActivityForResult(intent, RC_TRASH_NOTE)
         }
     }
 }

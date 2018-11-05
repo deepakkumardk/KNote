@@ -10,7 +10,7 @@ import com.deepak.knote.service.db.model.TrashNote
 /**
  * Database class to instantiate the RoomDatabase object
  */
-@Database(entities = [Note::class, TrashNote::class], version = 1, exportSchema = false)
+@Database(entities = [Note::class, TrashNote::class], version = 2, exportSchema = false)
 abstract class MyNoteDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
     abstract fun trashDao(): TrashDao
