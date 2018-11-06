@@ -32,6 +32,7 @@ class UpdateNoteActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.note_menu, menu)
         if (requestCode == RC_TRASH_NOTE) {
             menu?.findItem(R.id.action_save_note)?.isVisible = false
+            setTitle("Note")
         }
         return true
     }
@@ -58,8 +59,8 @@ class UpdateNoteActivity : AppCompatActivity() {
         requestCode = intent.getIntExtra(RC_ACTIVITY, RC_UPDATE_NOTE)
 
         if (requestCode == RC_TRASH_NOTE) {
-            update_note_title.isEnabled = false
-            update_note_content.isEnabled = false
+            update_note_title.isClickable = false
+            update_note_content.isClickable = false
             invalidateOptionsMenu()
         }
 

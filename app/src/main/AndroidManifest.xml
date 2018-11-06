@@ -48,7 +48,10 @@
             android:name=".view.ui.LicenseActivity"
             android:label="Licenses"
             android:parentActivityName=".view.ui.AboutActivity" />
-        <activity android:name=".view.ui.TrashActivity"></activity>
+        <activity
+            android:name=".view.ui.TrashActivity"
+            android:label="Trash"
+            android:parentActivityName=".view.ui.MainActivity" />
     </application>
 
 </manifest>

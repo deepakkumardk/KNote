@@ -1,6 +1,5 @@
 package com.deepak.knote.view.adapter
 
-
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

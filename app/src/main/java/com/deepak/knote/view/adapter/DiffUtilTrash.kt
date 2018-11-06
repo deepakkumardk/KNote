@@ -1,6 +1,5 @@
 package com.deepak.knote.view.adapter
 
-
 import android.support.v7.util.DiffUtil
 import com.deepak.knote.service.db.model.TrashNote
 

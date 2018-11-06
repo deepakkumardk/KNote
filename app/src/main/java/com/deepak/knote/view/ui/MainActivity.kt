@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
@@ -52,11 +51,8 @@ class MainActivity : AppCompatActivity() {
 
         noteList = mainViewModel.getAllNotesList()
         noteAdapter = KNoteAdapter { note, position -> onItemClick(note, position) }
-        recycler_view.apply {
-            hasFixedSize()
-            adapter = noteAdapter
-            layoutManager = LinearLayoutManager(applicationContext)
-        }
+        recycler_view.init(applicationContext)
+        recycler_view.adapter = noteAdapter
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -67,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 if (direction == ItemTouchHelper.RIGHT) {
                     val position = viewHolder.adapterPosition
                     val swipedNote = noteAdapter.getNoteAt(position)
+                    //Move the note to the trash and delete it from the main notes
                     val trashNote = TrashNote(swipedNote.id, swipedNote.noteTitle, swipedNote.noteContent)
                     TrashViewModel(application).insertTrash(trashNote)
 
@@ -74,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                     noteList.removeAt(position)
                     noteAdapter.notifyItemRemoved(position)
                     noteAdapter.submitList(noteList)
-                    toast("Moved to Trash")
+                    toast("Note moved to Trash")
                 }
             }
 

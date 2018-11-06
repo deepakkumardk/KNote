@@ -1,6 +1,9 @@
 package com.deepak.knote.util
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +18,13 @@ fun View?.show() {
 
 fun View?.hide() {
     this?.visibility = View.GONE
+}
+
+fun RecyclerView.init(context: Context) {
+    this.apply {
+        hasFixedSize()
+        layoutManager = LinearLayoutManager(context)
+    }
 }
 
 fun AppCompatActivity.hideSoftKeyboard() {

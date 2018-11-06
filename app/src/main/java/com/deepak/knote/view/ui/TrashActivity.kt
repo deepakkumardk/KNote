@@ -2,20 +2,27 @@ package com.deepak.knote.view.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import com.deepak.knote.R
+import com.deepak.knote.service.db.model.Note
 import com.deepak.knote.service.db.model.TrashNote
-import com.deepak.knote.util.*
+import com.deepak.knote.util.hide
+import com.deepak.knote.util.init
+import com.deepak.knote.util.show
 import com.deepak.knote.view.adapter.TrashAdapter
+import com.deepak.knote.viewmodel.MainViewModel
 import com.deepak.knote.viewmodel.TrashViewModel
 import kotlinx.android.synthetic.main.activity_trash.*
 import kotlinx.android.synthetic.main.empty_view.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 
+/**
+ * Trash activity to view the deleted notes
+ */
 class TrashActivity : AppCompatActivity() {
     private lateinit var trashAdapter: TrashAdapter
     private lateinit var trashList: MutableList<TrashNote>
@@ -34,13 +41,9 @@ class TrashActivity : AppCompatActivity() {
 
         trashList = trashViewModel.getTrashNotesList()
         trashAdapter = TrashAdapter { note, position -> onItemClick(note, position) }
-        recycler_view_trash.apply {
-            hasFixedSize()
-            adapter = trashAdapter
-            layoutManager = LinearLayoutManager(applicationContext)
-        }
+        recycler_view_trash.init(applicationContext)
+        recycler_view_trash.adapter = trashAdapter
     }
-
 
     /**
      * Check if the recycler view is empty or not
@@ -48,7 +51,7 @@ class TrashActivity : AppCompatActivity() {
     private fun checkEmptyView() {
         if (trashList.isEmpty()) {
             empty_view.show()
-            empty_text_view.text = "Trash is Empty"
+            empty_text_view.text = getString(R.string.empty_trash_message)
             recycler_view_trash.hide()
         } else {
             empty_view.hide()
@@ -57,26 +60,23 @@ class TrashActivity : AppCompatActivity() {
     }
 
     /**
-     * Open activity to edit note with transition
-     * TODO("decide if it's needed of not")
+     * Open activity to view with transition
      */
     private fun onItemClick(note: TrashNote?, position: Int) {
         val id = note?.id
         val title = note?.noteTitle.toString()
         val content = note?.noteContent.toString()
+        val noteToRestore = Note(noteTitle = title, noteContent = content)
 
-        val intent = Intent(this@TrashActivity, UpdateNoteActivity::class.java)
-        intent.putExtra(NOTE_ID, id)
-        intent.putExtra(NOTE_TITLE, title)
-        intent.putExtra(NOTE_CONTENT, content)
-        intent.putExtra(POSITION, position)
-        intent.putExtra(RC_ACTIVITY, RC_TRASH_NOTE)
+        alert("Do you want to restore the note?") {
+            yesButton { restoreNote(noteToRestore) }
+            noButton { it.dismiss() }
+        }.show()
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@TrashActivity)
-            startActivityForResult(intent, RC_TRASH_NOTE, options.toBundle())
-        } else {
-            startActivityForResult(intent, RC_TRASH_NOTE)
-        }
+    }
+
+    private fun restoreNote(note: Note) {
+        MainViewModel(application).insertNote(note)
+        toast("Note Restored Successfully")
     }
 }
