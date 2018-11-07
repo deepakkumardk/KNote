@@ -2,14 +2,13 @@ package com.deepak.knote.view.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.deepak.knote.R
 import com.deepak.knote.service.db.model.Note
 import com.deepak.knote.service.db.model.TrashNote
-import com.deepak.knote.util.hide
-import com.deepak.knote.util.init
-import com.deepak.knote.util.show
+import com.deepak.knote.util.*
 import com.deepak.knote.view.adapter.TrashAdapter
 import com.deepak.knote.viewmodel.MainViewModel
 import com.deepak.knote.viewmodel.TrashViewModel
@@ -73,6 +72,15 @@ class TrashActivity : AppCompatActivity() {
             noButton { it.dismiss() }
         }.show()
 
+    }
+
+    private fun viewNote(id: Int?, title: String, content: String) {
+        val intent = Intent(this@TrashActivity, UpdateNoteActivity::class.java)
+        intent.putExtra(NOTE_ID, id)
+        intent.putExtra(NOTE_TITLE, title)
+        intent.putExtra(NOTE_CONTENT, content)
+
+        startActivityForResults(intent, RC_TRASH_NOTE, this)
     }
 
     private fun restoreNote(note: Note) {

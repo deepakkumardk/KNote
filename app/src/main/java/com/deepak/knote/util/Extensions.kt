@@ -1,6 +1,11 @@
 package com.deepak.knote.util
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -33,4 +38,21 @@ fun AppCompatActivity.hideSoftKeyboard() {
 
 fun AppCompatActivity.validateInput(title: String, content: String): Boolean {
     return !(TextUtils.isEmpty(title.trim()) && TextUtils.isEmpty(content.trim()))
+}
+
+fun View.setAlphaAnimation(dX: Float) {
+    //set the alpha animation on swipe
+    val alphaAnimation = 1.0f - Math.abs(dX) / this.width.toFloat()
+    this.alpha = alphaAnimation
+    this.translationX = dX
+}
+
+fun FragmentActivity.startActivityForResults(intent: Intent, requestCode: Int, activity: Activity) {
+    intent.putExtra(RC_ACTIVITY, requestCode)
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity)
+        this.startActivityForResult(intent, requestCode, options.toBundle())
+    } else {
+        this.startActivityForResult(intent, requestCode)
+    }
 }
