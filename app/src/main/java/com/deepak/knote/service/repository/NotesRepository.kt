@@ -1,12 +1,11 @@
 package com.deepak.knote.service.repository
 
-import android.arch.lifecycle.LiveData
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.deepak.knote.service.db.MyNoteDatabase
 import com.deepak.knote.service.db.model.Note
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.anko.doAsync
 
 /**
@@ -22,7 +21,7 @@ class NotesRepository(context: Context) {
      */
     fun getAllNotes(): LiveData<MutableList<Note>> {
         runBlocking {
-            async(CommonPool) {
+            async {
                 liveNoteList = database?.noteDao()?.getAllNotes()!!
                 return@async liveNoteList
             }.await()
@@ -32,7 +31,7 @@ class NotesRepository(context: Context) {
 
     fun getAllNotesList(): MutableList<Note> {
         runBlocking {
-            async(CommonPool) {
+            async {
                 noteList = database?.noteDao()?.getAllNotesList()!!
                 return@async noteList
             }.await()
@@ -42,7 +41,7 @@ class NotesRepository(context: Context) {
 
     fun getNoteById(id: Int): LiveData<MutableList<Note>> {
         runBlocking {
-            async(CommonPool) {
+            async {
                 liveNoteList = database?.noteDao()?.getNoteById(id)!!
                 return@async liveNoteList
             }.await()

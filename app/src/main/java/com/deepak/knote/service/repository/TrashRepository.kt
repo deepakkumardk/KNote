@@ -1,12 +1,11 @@
 package com.deepak.knote.service.repository
 
-import android.arch.lifecycle.LiveData
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.deepak.knote.service.db.MyNoteDatabase
 import com.deepak.knote.service.db.model.TrashNote
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.anko.doAsync
 
 class TrashRepository(context: Context) {
@@ -19,7 +18,7 @@ class TrashRepository(context: Context) {
      */
     fun getLiveTrashNotes(): LiveData<MutableList<TrashNote>> {
         runBlocking {
-            async(CommonPool) {
+            async {
                 liveTrashList = database?.trashDao()?.getLiveTrashNotes()!!
                 return@async liveTrashList
             }.await()
@@ -29,7 +28,7 @@ class TrashRepository(context: Context) {
 
     fun getTrashNotesList(): MutableList<TrashNote> {
         runBlocking {
-            async(CommonPool) {
+            async {
                 trashList = database?.trashDao()?.getTrashNotesList()!!
                 return@async trashList
             }.await()

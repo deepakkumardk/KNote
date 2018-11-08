@@ -1,8 +1,8 @@
 package com.deepak.knote.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.deepak.knote.service.db.model.TrashNote
 import com.deepak.knote.service.repository.TrashRepository
 

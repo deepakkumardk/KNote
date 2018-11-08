@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".view.ui.NewNoteActivity">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -22,9 +22,9 @@
             android:hint="@string/note_title"
             tools:ignore="Autofill"
             tools:text="Note Title" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
@@ -38,6 +38,6 @@
             android:layout_height="match_parent"
             android:hint="@string/note_content"
             tools:ignore="Autofill" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

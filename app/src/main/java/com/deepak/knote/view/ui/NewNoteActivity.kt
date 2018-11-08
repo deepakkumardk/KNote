@@ -3,9 +3,9 @@ package com.deepak.knote.view.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.deepak.knote.R
 import com.deepak.knote.util.*
 import kotlinx.android.synthetic.main.activity_note.*

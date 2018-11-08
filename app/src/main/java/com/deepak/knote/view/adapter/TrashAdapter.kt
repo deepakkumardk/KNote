@@ -1,15 +1,13 @@
 package com.deepak.knote.view.adapter
 
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import com.deepak.knote.R
 import com.deepak.knote.service.db.model.TrashNote
 import org.jetbrains.anko.find
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 /**
  * The Adapter for the RecyclerView to view all notes
@@ -29,12 +27,12 @@ class TrashAdapter(private val listener: (TrashNote, Int) -> Unit) :
         val note = getItem(position)
         viewHolder.noteTitle.text = note.noteTitle
         viewHolder.noteContent.text = note.noteContent
-        viewHolder.itemView.onClick { listener(note, position) }
+        viewHolder.itemView.setOnClickListener { listener(note, position) }
     }
 
     fun getNoteAt(position: Int): TrashNote = getItem(position)
 
-    class TrashViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class TrashViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         var noteTitle = itemView.find<TextView>(R.id.item_note_title)
         var noteContent = itemView.find<TextView>(R.id.item_note_content)
     }

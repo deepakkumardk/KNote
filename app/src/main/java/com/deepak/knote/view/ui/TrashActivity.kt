@@ -1,10 +1,10 @@
 package com.deepak.knote.view.ui
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.deepak.knote.R
 import com.deepak.knote.service.db.model.Note
 import com.deepak.knote.service.db.model.TrashNote
@@ -66,9 +66,10 @@ class TrashActivity : AppCompatActivity() {
         val title = note?.noteTitle.toString()
         val content = note?.noteContent.toString()
         val noteToRestore = Note(noteTitle = title, noteContent = content)
+        val noteToDelete = TrashNote(id!!, title, content)
 
         alert("Do you want to restore the note?") {
-            yesButton { restoreNote(noteToRestore) }
+            yesButton { restoreNote(noteToRestore, noteToDelete, position) }
             noButton { it.dismiss() }
         }.show()
 
@@ -83,8 +84,13 @@ class TrashActivity : AppCompatActivity() {
         startActivityForResults(intent, RC_TRASH_NOTE, this)
     }
 
-    private fun restoreNote(note: Note) {
+    private fun restoreNote(note: Note, trashNote: TrashNote, position: Int) {
         MainViewModel(application).insertNote(note)
+
+        trashViewModel.deleteTrash(trashNote)
+        trashList.removeAt(position)
+        trashAdapter.notifyItemRemoved(position)
+        trashAdapter.submitList(trashList)
         toast("Note Restored Successfully")
     }
 }
