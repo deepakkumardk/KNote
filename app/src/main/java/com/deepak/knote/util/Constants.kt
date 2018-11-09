@@ -3,12 +3,11 @@ package com.deepak.knote.util
 /**
  * App constants
  */
-const val NOTE_ID = "NOTE_ID"
-const val NOTE_TITLE = "NOTE_TITLE"
-const val NOTE_CONTENT = "NOTE_CONTENT"
-const val IS_TRASHED = "IS_TRASHED"
-const val POSITION = "POSITION"
-const val RC_ACTIVITY = "REQUEST_CODE"
+const val EXTRA_NOTE_ID = "EXTRA_NOTE_ID"
+const val EXTRA_NOTE_TITLE = "EXTRA_NOTE_TITLE"
+const val EXTRA_NOTE_CONTENT = "EXTRA_NOTE_CONTENT"
+const val EXTRA_POSITION = "EXTRA_POSITION"
+const val EXTRA_RC = "REQUEST_CODE"
 const val RC_NEW_NOTE = 101
 const val RC_UPDATE_NOTE = 102
 const val RC_TRASH_NOTE = 103

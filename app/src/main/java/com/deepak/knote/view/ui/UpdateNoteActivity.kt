@@ -51,12 +51,23 @@ class UpdateNoteActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val title = update_note_title.text.toString()
+        val content = update_note_content.text.toString()
+
+        when {
+            this.title == title && this.content == content -> supportFinishAfterTransition()
+            title.isNotEmpty() || content.isNotEmpty() -> updateNote()
+            else -> supportFinishAfterTransition()
+        }
+    }
+
     private fun loadNoteInfo() {
-        id = intent.getIntExtra(NOTE_ID, 0)
-        title = intent?.getStringExtra(NOTE_TITLE).toString()
-        content = intent?.getStringExtra(NOTE_CONTENT).toString()
-        position = intent.getIntExtra(POSITION, 0)
-        requestCode = intent.getIntExtra(RC_ACTIVITY, RC_UPDATE_NOTE)
+        id = intent.getIntExtra(EXTRA_NOTE_ID, 0)
+        title = intent?.getStringExtra(EXTRA_NOTE_TITLE).toString()
+        content = intent?.getStringExtra(EXTRA_NOTE_CONTENT).toString()
+        position = intent.getIntExtra(EXTRA_POSITION, 0)
+        requestCode = intent.getIntExtra(EXTRA_RC, RC_UPDATE_NOTE)
 
         if (requestCode == RC_TRASH_NOTE) {
             update_note_title.isClickable = false
@@ -75,25 +86,14 @@ class UpdateNoteActivity : AppCompatActivity() {
         if (validateInput(title, content)) {
             hideSoftKeyboard()
             val intent = Intent()
-            intent.putExtra(NOTE_ID, id)
-            intent.putExtra(NOTE_TITLE, title)
-            intent.putExtra(NOTE_CONTENT, content)
-            intent.putExtra(POSITION, position)
+            intent.putExtra(EXTRA_NOTE_ID, id)
+            intent.putExtra(EXTRA_NOTE_TITLE, title)
+            intent.putExtra(EXTRA_NOTE_CONTENT, content)
+            intent.putExtra(EXTRA_POSITION, position)
             setResult(Activity.RESULT_OK, intent)
             supportFinishAfterTransition()
         } else {
             toast(R.string.empty_alert_message)
-        }
-    }
-
-    override fun onBackPressed() {
-        val title = update_note_title.text.toString()
-        val content = update_note_content.text.toString()
-
-        when {
-            this.title == title && this.content == content -> supportFinishAfterTransition()
-            title.isNotEmpty() || content.isNotEmpty() -> updateNote()
-            else -> supportFinishAfterTransition()
         }
     }
 }

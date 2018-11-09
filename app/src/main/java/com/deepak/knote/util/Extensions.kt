@@ -9,6 +9,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
 import org.jetbrains.anko.inputMethodManager
 
 /**
@@ -22,7 +24,7 @@ fun View?.hide() {
     this?.visibility = View.GONE
 }
 
-fun androidx.recyclerview.widget.RecyclerView.init(context: Context) {
+fun RecyclerView.init(context: Context) {
     this.apply {
         hasFixedSize()
         layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
@@ -44,8 +46,8 @@ fun View.setAlphaAnimation(dX: Float) {
     this.translationX = dX
 }
 
-fun androidx.fragment.app.FragmentActivity.startActivityForResults(intent: Intent, requestCode: Int, activity: Activity) {
-    intent.putExtra(RC_ACTIVITY, requestCode)
+fun FragmentActivity.startActivityForResults(intent: Intent, requestCode: Int, activity: Activity) {
+    intent.putExtra(EXTRA_RC, requestCode)
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity)
         this.startActivityForResult(intent, requestCode, options.toBundle())

@@ -81,17 +81,54 @@ class MainActivity : AppCompatActivity() {
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recycler_view)
 
-        //Start the NewNoteActivity with smooth transition
         fab.setOnClickListener {
-            val intent = Intent(this@MainActivity, NewNoteActivity::class.java)
-            startActivityForResults(intent, RC_NEW_NOTE, this@MainActivity)
+            val intent = Intent(this, NewNoteActivity::class.java)
+            startActivityForResults(intent, RC_NEW_NOTE, this)
         }
 
     }
 
-    /**
-     * Check if the recycler view is empty or not
-     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_trash -> {
+                startActivity<TrashActivity>()
+                true
+            }
+            R.id.action_about_app -> {
+                startActivity<AboutActivity>()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            val title = data.getStringExtra(EXTRA_NOTE_TITLE).toString()
+            val content = data.getStringExtra(EXTRA_NOTE_CONTENT).toString()
+            if (requestCode == RC_NEW_NOTE) {
+                val note = Note(noteTitle = title, noteContent = content)
+                mainViewModel.insertNote(note)
+                toast("Note Saved...")
+            } else if (requestCode == RC_UPDATE_NOTE) {
+                val id = data.getIntExtra(EXTRA_NOTE_ID, 0)
+                val position = data.getIntExtra(EXTRA_POSITION, 0)
+                val note = Note(id, title, content)
+                mainViewModel.updateNote(note)
+                noteAdapter.notifyItemChanged(position)
+                recycler_view.scrollToPosition(position)
+                toast("Note Saved")
+            }
+        }
+    }
+
+    // Check if the recycler view is empty or not
     private fun checkEmptyView() {
         if (noteList.isEmpty()) {
             empty_view.show()
@@ -138,65 +175,19 @@ class MainActivity : AppCompatActivity() {
         return icon
     }
 
-    /**
-     * Open activity to edit note with transition
-     */
+    // Open activity to edit note with transition
     private fun onItemClick(note: Note?, position: Int) {
         val id = note?.id
         val title = note?.noteTitle.toString()
         val content = note?.noteContent.toString()
 
         val intent = Intent(this, UpdateNoteActivity::class.java)
-        intent.putExtra(NOTE_ID, id)
-        intent.putExtra(NOTE_TITLE, title)
-        intent.putExtra(NOTE_CONTENT, content)
-        intent.putExtra(POSITION, position)
+        intent.putExtra(EXTRA_NOTE_ID, id)
+        intent.putExtra(EXTRA_NOTE_TITLE, title)
+        intent.putExtra(EXTRA_NOTE_CONTENT, content)
+        intent.putExtra(EXTRA_POSITION, position)
 
         startActivityForResults(intent, RC_UPDATE_NOTE, this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.action_trash -> {
-                startActivity<TrashActivity>()
-                true
-            }
-            R.id.action_about_app -> {
-                startActivity<AboutActivity>()
-                true
-            }
-            R.id.home -> {
-                supportFinishAfterTransition()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            val title = data.getStringExtra(NOTE_TITLE).toString()
-            val content = data.getStringExtra(NOTE_CONTENT).toString()
-            if (requestCode == RC_NEW_NOTE) {
-                val note = Note(noteTitle = title, noteContent = content)
-                mainViewModel.insertNote(note)
-                toast("Note Saved...")
-            } else if (requestCode == RC_UPDATE_NOTE) {
-                val id = data.getIntExtra(NOTE_ID, 0)
-                val position = data.getIntExtra(POSITION, 0)
-                val note = Note(id, title, content)
-                mainViewModel.updateNote(note)
-                noteAdapter.notifyItemChanged(position)
-                recycler_view.scrollToPosition(position)
-                toast("Note Saved")
-            }
-        }
     }
 
     override fun onDestroy() {
