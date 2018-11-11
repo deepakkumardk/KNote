@@ -35,8 +35,8 @@ class NewNoteActivity : AppCompatActivity() {
                 insertNote()
                 true
             }
-            android.R.id.home -> {
-                onBackPressed()
+            R.id.home -> {
+                supportFinishAfterTransition()
                 true
             }
             else -> super.onOptionsItemSelected(item)
