@@ -15,9 +15,7 @@ import com.deepak.knote.viewmodel.TrashViewModel
 import kotlinx.android.synthetic.main.activity_trash.*
 import kotlinx.android.synthetic.main.empty_view.*
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.yesButton
 
 /**
  * Trash activity to view the deleted notes
@@ -68,9 +66,16 @@ class TrashActivity : AppCompatActivity() {
         val noteToRestore = Note(noteTitle = title, noteContent = content)
         val noteToDelete = TrashNote(id!!, title, content)
 
-        alert("Do you want to restore the note?") {
-            yesButton { restoreNote(noteToRestore, noteToDelete, position) }
-            noButton { it.dismiss() }
+        alert("Do you want to restore the note?").apply {
+            positiveButton("Restore") { restoreNote(noteToRestore, noteToDelete, position) }
+            negativeButton("View") { viewNote(id, title, content) }
+            neutralPressed("Delete") {
+                trashViewModel.deleteTrash(noteToDelete)
+                trashList.removeAt(position)
+                trashAdapter.notifyItemRemoved(position)
+                trashAdapter.submitList(trashList)
+                toast("Note Deleted Successfully")
+            }
         }.show()
 
     }
