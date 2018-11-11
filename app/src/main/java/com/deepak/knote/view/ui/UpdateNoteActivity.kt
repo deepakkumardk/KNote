@@ -43,8 +43,8 @@ class UpdateNoteActivity : AppCompatActivity() {
                 updateNote()
                 true
             }
-            R.id.home -> {
-                supportFinishAfterTransition()
+            android.R.id.home -> {
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
