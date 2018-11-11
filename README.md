@@ -1,4 +1,4 @@
-﻿<h1 align=center>
+<h1 align=center>
 <img src="screenshots/KNote_icon.svg" width=50%>
 </h1>
 
@@ -6,8 +6,8 @@
 A simple note taking app using Kotlin and Android Architecture components.
 
 
-<img alt="KNote-demo" src="App-demo-main.png" width="400" >
-<img alt="KNote-demo" src="App-demo-new-note.png" width="400">
+<img alt="KNote-demo" src="screenshots/App-demo-main.png" width="400" >
+<img alt="KNote-demo" src="screenshots/App-demo-new-note.png" width="400">
 
 # Libraries Used
 - **Anko**: For Pleasant Android Development
