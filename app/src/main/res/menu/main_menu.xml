@@ -6,6 +6,10 @@
         android:title="@string/trash"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_todo"
+        android:title="@string/to_do_list"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_about_app"
         android:title="@string/about"
         app:showAsAction="never" />

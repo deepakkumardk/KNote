@@ -52,6 +52,7 @@
             android:name=".view.ui.TrashActivity"
             android:label="Trash"
             android:parentActivityName=".view.ui.MainActivity" />
+        <activity android:name=".view.ui.ToDoActivity"></activity>
     </application>
 
 </manifest>

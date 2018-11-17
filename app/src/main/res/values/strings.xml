@@ -15,4 +15,5 @@
     <string name="about">About</string>
     <string name="trash">Trash</string>
     <string name="empty_trash_message">Trash is Empty</string>
+    <string name="to_do_list">To Do List</string>
 </resources>

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.deepak.knote.R
 import com.deepak.knote.service.db.model.TrashNote
 import org.jetbrains.anko.find
@@ -32,7 +33,7 @@ class TrashAdapter(private val listener: (TrashNote, Int) -> Unit) :
 
     fun getNoteAt(position: Int): TrashNote = getItem(position)
 
-    class TrashViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    class TrashViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var noteTitle = itemView.find<TextView>(R.id.item_note_title)
         var noteContent = itemView.find<TextView>(R.id.item_note_content)
     }

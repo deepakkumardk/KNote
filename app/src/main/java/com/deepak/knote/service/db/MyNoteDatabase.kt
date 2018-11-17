@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.deepak.knote.service.db.dao.NoteDao
+import com.deepak.knote.service.db.dao.ToDoDao
+import com.deepak.knote.service.db.dao.TrashDao
 import com.deepak.knote.service.db.model.Note
 import com.deepak.knote.service.db.model.TrashNote
 
@@ -14,6 +17,7 @@ import com.deepak.knote.service.db.model.TrashNote
 abstract class MyNoteDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
     abstract fun trashDao(): TrashDao
+    abstract fun todoDao(): ToDoDao
 
     companion object {
         private var INSTANCE: MyNoteDatabase? = null

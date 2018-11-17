@@ -81,7 +81,7 @@ class TrashActivity : AppCompatActivity() {
     }
 
     private fun viewNote(id: Int?, title: String, content: String) {
-        val intent = Intent(this@TrashActivity, UpdateNoteActivity::class.java)
+        val intent = Intent(this, UpdateNoteActivity::class.java)
         intent.putExtra(EXTRA_NOTE_ID, id)
         intent.putExtra(EXTRA_NOTE_TITLE, title)
         intent.putExtra(EXTRA_NOTE_CONTENT, content)

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.deepak.knote.R
 import com.deepak.knote.service.db.MyNoteDatabase
 import com.deepak.knote.service.db.model.Note
@@ -53,11 +54,11 @@ class MainActivity : AppCompatActivity() {
         recycler_view.adapter = noteAdapter
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, target: androidx.recyclerview.widget.RecyclerView.ViewHolder): Boolean {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return false
             }
 
-            override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 if (direction == ItemTouchHelper.RIGHT) {
                     val position = viewHolder.adapterPosition
                     val swipedNote = noteAdapter.getNoteAt(position)
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onChildDraw(c: Canvas, recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
                 val item = viewHolder.itemView
                 if (dX > 0) {
                     val background = setBackground(item, dX)
@@ -97,6 +98,10 @@ class MainActivity : AppCompatActivity() {
         return when (item?.itemId) {
             R.id.action_trash -> {
                 startActivity<TrashActivity>()
+                true
+            }
+            R.id.action_todo -> {
+                startActivity<ToDoActivity>()
                 true
             }
             R.id.action_about_app -> {

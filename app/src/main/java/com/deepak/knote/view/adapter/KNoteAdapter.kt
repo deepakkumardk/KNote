@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.deepak.knote.R
 import com.deepak.knote.service.db.model.Note
 import org.jetbrains.anko.find
@@ -32,7 +33,7 @@ class KNoteAdapter(private val listener: (Note, Int) -> Unit) :
 
     fun getNoteAt(position: Int): Note = getItem(position)
 
-    class KNoteViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    class KNoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var noteTitle = itemView.find<TextView>(R.id.item_note_title)
         var noteContent = itemView.find<TextView>(R.id.item_note_content)
     }

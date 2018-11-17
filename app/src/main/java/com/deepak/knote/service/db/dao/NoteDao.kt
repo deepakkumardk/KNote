@@ -1,4 +1,4 @@
-package com.deepak.knote.service.db
+package com.deepak.knote.service.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
