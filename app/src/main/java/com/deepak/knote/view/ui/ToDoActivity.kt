@@ -1,12 +1,8 @@
 package com.deepak.knote.view.ui
 
-import android.content.Intent
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -18,10 +14,9 @@ import com.deepak.knote.service.db.model.ToDo
 import com.deepak.knote.util.*
 import com.deepak.knote.view.adapter.ToDoAdapter
 import com.deepak.knote.viewmodel.ToDoViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_to_do.*
 import kotlinx.android.synthetic.main.empty_view.*
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 
 class ToDoActivity : AppCompatActivity() {
     private lateinit var todoAdapter: ToDoAdapter
@@ -53,8 +48,8 @@ class ToDoActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 if (direction == ItemTouchHelper.RIGHT) {
                     val position = viewHolder.adapterPosition
-                    val swipedNote = todoAdapter.getTodoAt(position)
-                    removeTodo(swipedNote, position)
+                    val swipedTodo = todoAdapter.getTodoAt(position)
+                    removeTodo(swipedTodo, position)
                 }
             }
 
@@ -63,7 +58,8 @@ class ToDoActivity : AppCompatActivity() {
                 if (dX > 0) {
                     val background = setBackground(item, dX)
                     background?.draw(c)
-                    val icon = getDeleteIcon(item)
+                    val iconDelete = ContextCompat.getDrawable(applicationContext, R.drawable.ic_delete)
+                    val icon = getDeleteIcon(item, iconDelete)
                     icon?.draw(c)
                     item.setAlphaAnimation(dX)
                 } else {
@@ -72,14 +68,24 @@ class ToDoActivity : AppCompatActivity() {
             }
         }
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(recycler_view)
+        itemTouchHelper.attachToRecyclerView(recycler_view_todo)
 
-        fab.setOnClickListener {
-            val intent = Intent(this, NewNoteActivity::class.java)
-            startActivityForResults(intent, RC_NEW_NOTE, this)
+        fab_todo.setOnClickListener { view ->
+            alert("Add new Todo") {
+                lateinit var title: EditText
+                lateinit var description: EditText
+                customView {
+                    verticalLayout {
+                        padding = dip(8)
+                        title = editText { hint = "Title";singleLine = true }
+                        description = editText { hint = "Description" }
+                    }
+                }
+                okButton { saveTodo(title.text.toString(), description.text.toString()) }
+                cancelButton { it.dismiss() }
+            }.show()
         }
     }
-
 
     /**
      * Check if the recycler view is empty or not
@@ -100,38 +106,44 @@ class ToDoActivity : AppCompatActivity() {
         todoList.removeAt(position)
         todoAdapter.notifyItemRemoved(position)
         todoAdapter.submitList(todoList)
-        toast("Note moved to Trash")
-    }
-
-    private fun setBackground(item: View, dX: Float): ColorDrawable? {
-        //Draw the background of note item with material red color
-        //set the bounds for background of item
-        val background = ColorDrawable(Color.parseColor("#f44336"))
-        background.setBounds(item.left, item.top, (item.left + dX).toInt(), item.bottom)
-        return background
-    }
-
-    private fun getDeleteIcon(item: View): Drawable? {
-        //Draw the icon over the background
-        val icon = ContextCompat.getDrawable(applicationContext, R.drawable.ic_delete)
-        val iconWidth = icon?.intrinsicWidth as Int
-        val iconHeight = icon.intrinsicHeight
-        val cellHeight = item.bottom - item.top
-        val margin = (cellHeight - iconHeight) / 2
-        val iconTop = item.top + margin
-        val iconBottom = iconTop + iconHeight
-        val iconLeft = 48
-        val iconRight = iconLeft + iconWidth
-
-        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-        return icon
+        toast("Todo removed")
     }
 
     // Open activity to edit note with transition
     private fun onItemClick(todo: ToDo?, position: Int) {
         val id = todo?.id
-        val title = todo?.todoTitle.toString()
-        val content = todo?.todoDescription.toString()
+        val todoTitle = todo?.todoTitle.toString()
+        val todoDes = todo?.todoDescription.toString()
 
+        alert("", "TODO") {
+            lateinit var title: EditText
+            lateinit var description: EditText
+            customView {
+                verticalLayout {
+                    padding = dip(8)
+                    title = editText(text = todoTitle) { hint = "Title";singleLine = true }
+                    description = editText(text = todoDes) { hint = "Description" }
+                }
+            }
+            okButton { updateTodo(id!!, title.text.toString(), description.text.toString()) }
+            cancelButton { it.dismiss() }
+        }.show()
+
+    }
+
+    private fun saveTodo(title: String, description: String) {
+        if (validateInput(title, description)) {
+            val todo = ToDo(todoTitle = title, todoDescription = description)
+            todoViewModel.insert(todo)
+            toast("Todo Saved")
+        }
+    }
+
+    private fun updateTodo(id: Int, title: String, description: String) {
+        if (validateInput(title, description)) {
+            val todo = ToDo(id, title, description)
+            todoViewModel.update(todo)
+            toast("Todo Updated")
+        }
     }
 }

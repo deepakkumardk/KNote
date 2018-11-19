@@ -20,7 +20,7 @@ class ToDoAdapter(private val listener: (ToDo, Int) -> Unit) :
         ListAdapter<ToDo, ToDoAdapter.ToDoViewHolder>(DiffUtilTodo()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ToDoViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_note, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_todo, viewGroup, false)
         return ToDoViewHolder(view)
     }
 

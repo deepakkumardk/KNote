@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * ToDo model class for Room
+ * To-Do model class for Room
  */
 @Entity(tableName = "todo")
 data class ToDo(
