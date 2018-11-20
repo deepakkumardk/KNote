@@ -5,9 +5,10 @@
 # KNote
 A simple note taking app using Kotlin and Android Architecture components.
 
+:star: Add,edit,delete,restore your notes<br>
+:star: Add Todo list
 
-<img alt="KNote-demo" src="screenshots/App-demo-main.png" width="400" >
-<img alt="KNote-demo" src="screenshots/App-demo-new-note.png" width="400">
+<img alt="KNote-demo" src="screenshots/App-demo-main.png" width="400" > <img alt="KNote-demo" src="screenshots/App-demo-new-note.png" width="400">
 
 # Libraries Used
 - **Anko**: For Pleasant Android Development

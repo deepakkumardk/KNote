@@ -2,6 +2,7 @@ package com.deepak.knote.view.ui
 
 import android.graphics.Canvas
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -38,7 +39,6 @@ class ToDoActivity : AppCompatActivity() {
         todoAdapter = ToDoAdapter { note, position -> onItemClick(note, position) }
         recycler_view_todo.init(applicationContext)
         recycler_view_todo.adapter = todoAdapter
-
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -87,13 +87,23 @@ class ToDoActivity : AppCompatActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                supportFinishAfterTransition()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     /**
      * Check if the recycler view is empty or not
      */
     private fun checkEmptyView() {
         if (todoList.isEmpty()) {
             empty_view.show()
-            empty_text_view.text = "Empty Todo"
+            empty_text_view.text = getString(R.string.empty_todo_message)
             recycler_view_todo.hide()
         } else {
             empty_view.hide()
@@ -121,14 +131,13 @@ class ToDoActivity : AppCompatActivity() {
             customView {
                 verticalLayout {
                     padding = dip(8)
-                    title = editText(text = todoTitle) { hint = "Title";singleLine = true }
+                    title = editText(text = todoTitle) { hint = "Title"; singleLine = true }
                     description = editText(text = todoDes) { hint = "Description" }
                 }
             }
             okButton { updateTodo(id!!, title.text.toString(), description.text.toString()) }
             cancelButton { it.dismiss() }
         }.show()
-
     }
 
     private fun saveTodo(title: String, description: String) {

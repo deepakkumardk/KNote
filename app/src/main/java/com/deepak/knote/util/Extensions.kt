@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.jetbrains.anko.inputMethodManager
 
@@ -30,7 +31,7 @@ fun View?.hide() {
 fun RecyclerView.init(context: Context) {
     this.apply {
         hasFixedSize()
-        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        layoutManager = LinearLayoutManager(context)
     }
 }
 
@@ -38,9 +39,9 @@ fun AppCompatActivity.hideSoftKeyboard() {
     inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 }
 
-fun validateInput(title: String, content: String): Boolean {
-    return !(TextUtils.isEmpty(title.trim()) && TextUtils.isEmpty(content.trim()))
-}
+fun validateInput(title: String, content: String): Boolean =
+        !(TextUtils.isEmpty(title.trim()) && TextUtils.isEmpty(content.trim()))
+
 
 fun View.setAlphaAnimation(dX: Float) {
     //set the alpha animation on swipe

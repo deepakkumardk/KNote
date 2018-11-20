@@ -15,28 +15,25 @@
         <activity android:name=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.ui.NewNoteActivity"
-            android:label="New Note"
+            android:label="@string/new_note_title"
             android:parentActivityName=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.ui.UpdateNoteActivity"
-            android:label="Update Note"
+            android:label="@string/update_note_title"
             android:parentActivityName=".view.ui.MainActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -46,13 +43,16 @@
             android:theme="@style/AppTheme.MaterialAboutActivity" />
         <activity
             android:name=".view.ui.LicenseActivity"
-            android:label="Licenses"
+            android:label="@string/licenses_title"
             android:parentActivityName=".view.ui.AboutActivity" />
         <activity
             android:name=".view.ui.TrashActivity"
-            android:label="Trash"
+            android:label="@string/trash_title"
             android:parentActivityName=".view.ui.MainActivity" />
-        <activity android:name=".view.ui.ToDoActivity"></activity>
+        <activity
+            android:name=".view.ui.ToDoActivity"
+            android:label="@string/todo_title"
+            android:parentActivityName=".view.ui.MainActivity" />
     </application>
 
 </manifest>

@@ -14,6 +14,12 @@
     <string name="delete_icon">Delete Icon</string>
     <string name="about">About</string>
     <string name="trash">Trash</string>
-    <string name="empty_trash_message">Trash is Empty</string>
+    <string name="empty_trash_message">Empty Trash</string>
     <string name="to_do_list">To Do List</string>
+    <string name="licenses_title">Licenses</string>
+    <string name="todo_title">TODO</string>
+    <string name="trash_title">Trash</string>
+    <string name="update_note_title">Update Note</string>
+    <string name="new_note_title">New Note</string>
+    <string name="empty_todo_message">Empty TODO</string>
 </resources>

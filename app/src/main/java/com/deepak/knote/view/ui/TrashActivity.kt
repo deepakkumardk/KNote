@@ -2,6 +2,7 @@ package com.deepak.knote.view.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -42,12 +43,23 @@ class TrashActivity : AppCompatActivity() {
         recycler_view_trash.adapter = trashAdapter
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                supportFinishAfterTransition()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     /**
      * Check if the recycler view is empty or not
      */
     private fun checkEmptyView() {
         if (trashList.isEmpty()) {
             empty_view.show()
+            empty_image_view.setImageResource(R.drawable.ic_sentiment_satisfied)
             empty_text_view.text = getString(R.string.empty_trash_message)
             recycler_view_trash.hide()
         } else {
