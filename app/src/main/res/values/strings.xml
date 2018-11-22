@@ -22,4 +22,5 @@
     <string name="update_note_title">Update Note</string>
     <string name="new_note_title">New Note</string>
     <string name="empty_todo_message">Empty TODO</string>
+    <string name="drawer_header_image">Drawer Header Image</string>
 </resources>

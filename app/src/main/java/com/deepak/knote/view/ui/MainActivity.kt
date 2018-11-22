@@ -3,13 +3,9 @@ package com.deepak.knote.view.ui
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -26,6 +22,7 @@ import com.deepak.knote.viewmodel.MainViewModel
 import com.deepak.knote.viewmodel.TrashViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.empty_view.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -41,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initToolbar()
         mainViewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         mainViewModel.getAllNotes().observe(this, Observer {
             noteAdapter.submitList(it as MutableList<Note>)
@@ -71,7 +69,8 @@ class MainActivity : AppCompatActivity() {
                 if (dX > 0) {
                     val background = setBackground(item, dX)
                     background?.draw(c)
-                    val icon = getDeleteIcon(item)
+                    val iconDelete = ContextCompat.getDrawable(applicationContext, R.drawable.ic_delete)
+                    val icon = getDeleteIcon(item, iconDelete)
                     icon?.draw(c)
                     item.setAlphaAnimation(dX)
                 } else {
@@ -115,22 +114,24 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
-            val title = data.getStringExtra(EXTRA_NOTE_TITLE).toString()
-            val content = data.getStringExtra(EXTRA_NOTE_CONTENT).toString()
+            val note = data.getParcelableExtra<Note>(EXTRA_NOTE)
             if (requestCode == RC_NEW_NOTE) {
-                val note = Note(noteTitle = title, noteContent = content)
                 mainViewModel.insertNote(note)
+                recycler_view.smoothScrollToPosition(noteList.size)
                 toast("Note Saved...")
             } else if (requestCode == RC_UPDATE_NOTE) {
-                val id = data.getIntExtra(EXTRA_NOTE_ID, 0)
                 val position = data.getIntExtra(EXTRA_POSITION, 0)
-                val note = Note(id, title, content)
                 mainViewModel.updateNote(note)
                 noteAdapter.notifyItemChanged(position)
-                recycler_view.scrollToPosition(position)
+                recycler_view.smoothScrollToPosition(position)
                 toast("Note Saved")
             }
         }
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        title = getString(R.string.app_name)
     }
 
     // Check if the recycler view is empty or not
@@ -156,48 +157,17 @@ class MainActivity : AppCompatActivity() {
         toast("Note moved to Trash")
     }
 
-    private fun setBackground(item: View, dX: Float): ColorDrawable? {
-        //Draw the background of note item with material red color
-        //set the bounds for background of item
-        val background = ColorDrawable(Color.parseColor("#f44336"))
-        background.setBounds(item.left, item.top, (item.left + dX).toInt(), item.bottom)
-        return background
-    }
-
-    private fun getDeleteIcon(item: View): Drawable? {
-        //Draw the icon over the background
-        val icon = ContextCompat.getDrawable(applicationContext, R.drawable.ic_delete)
-        val iconWidth = icon?.intrinsicWidth as Int
-        val iconHeight = icon.intrinsicHeight
-        val cellHeight = item.bottom - item.top
-        val margin = (cellHeight - iconHeight) / 2
-        val iconTop = item.top + margin
-        val iconBottom = iconTop + iconHeight
-        val iconLeft = 48
-        val iconRight = iconLeft + iconWidth
-
-        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-        return icon
-    }
-
     // Open activity to edit note with transition
     private fun onItemClick(note: Note?, position: Int) {
-        val id = note?.id
-        val title = note?.noteTitle.toString()
-        val content = note?.noteContent.toString()
-
         val intent = Intent(this, UpdateNoteActivity::class.java)
-        intent.putExtra(EXTRA_NOTE_ID, id)
-        intent.putExtra(EXTRA_NOTE_TITLE, title)
-        intent.putExtra(EXTRA_NOTE_CONTENT, content)
         intent.putExtra(EXTRA_POSITION, position)
-
+        intent.putExtra(EXTRA_NOTE, note)
         startActivityForResults(intent, RC_UPDATE_NOTE, this)
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         MyNoteDatabase.destroyInstance()
+        super.onDestroy()
     }
 
 }

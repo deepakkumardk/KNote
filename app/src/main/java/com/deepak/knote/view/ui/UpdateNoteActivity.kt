@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.deepak.knote.R
+import com.deepak.knote.service.db.model.Note
 import com.deepak.knote.util.*
 import kotlinx.android.synthetic.main.activity_update_note.*
 import org.jetbrains.anko.toast
@@ -15,7 +16,7 @@ import org.jetbrains.anko.toast
  * Activity to update note
  */
 class UpdateNoteActivity : AppCompatActivity() {
-    private var id: Int = 0
+    private var id: Int? = 0
     private var title: String? = null
     private var content: String? = null
     private var position: Int = 0
@@ -54,7 +55,6 @@ class UpdateNoteActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val title = update_note_title.text.toString()
         val content = update_note_content.text.toString()
-
         when {
             this.title == title && this.content == content -> supportFinishAfterTransition()
             title.isNotEmpty() || content.isNotEmpty() -> updateNote()
@@ -63,9 +63,10 @@ class UpdateNoteActivity : AppCompatActivity() {
     }
 
     private fun loadNoteInfo() {
-        id = intent.getIntExtra(EXTRA_NOTE_ID, 0)
-        title = intent?.getStringExtra(EXTRA_NOTE_TITLE).toString()
-        content = intent?.getStringExtra(EXTRA_NOTE_CONTENT).toString()
+        val note = intent.getParcelableExtra<Note>(EXTRA_NOTE)
+        id = note?.id
+        title = note?.noteTitle.toString()
+        content = note?.noteContent.toString()
         position = intent.getIntExtra(EXTRA_POSITION, 0)
         requestCode = intent.getIntExtra(EXTRA_RC, RC_UPDATE_NOTE)
 
@@ -74,7 +75,6 @@ class UpdateNoteActivity : AppCompatActivity() {
             update_note_content.isClickable = false
             invalidateOptionsMenu()
         }
-
         update_note_title.setText(title)
         update_note_title.selectionEnd
         update_note_content.setText(content)
@@ -85,10 +85,9 @@ class UpdateNoteActivity : AppCompatActivity() {
         val content = update_note_content.text.toString()
         if (validateInput(title, content)) {
             hideSoftKeyboard()
+            val note = Note(id!!, title, content)
             val intent = Intent()
-            intent.putExtra(EXTRA_NOTE_ID, id)
-            intent.putExtra(EXTRA_NOTE_TITLE, title)
-            intent.putExtra(EXTRA_NOTE_CONTENT, content)
+            intent.putExtra(EXTRA_NOTE, note)
             intent.putExtra(EXTRA_POSITION, position)
             setResult(Activity.RESULT_OK, intent)
             supportFinishAfterTransition()
