@@ -11,7 +11,7 @@ import com.deepak.knote.service.db.model.Note
 import com.deepak.knote.util.EXTRA_NOTE
 import com.deepak.knote.util.hideSoftKeyboard
 import com.deepak.knote.util.validateInput
-import kotlinx.android.synthetic.main.activity_note.*
+import kotlinx.android.synthetic.main.activity_new_note.*
 import org.jetbrains.anko.toast
 
 /**
@@ -21,7 +21,7 @@ class NewNoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note)
+        setContentView(R.layout.activity_new_note)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

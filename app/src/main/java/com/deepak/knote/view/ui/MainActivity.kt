@@ -4,14 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import co.zsmb.materialdrawerkt.builders.drawer
+import co.zsmb.materialdrawerkt.draweritems.badgeable.primaryItem
 import com.deepak.knote.R
 import com.deepak.knote.service.db.MyNoteDatabase
 import com.deepak.knote.service.db.model.Note
@@ -20,6 +20,7 @@ import com.deepak.knote.util.*
 import com.deepak.knote.view.adapter.KNoteAdapter
 import com.deepak.knote.viewmodel.MainViewModel
 import com.deepak.knote.viewmodel.TrashViewModel
+import com.mikepenz.materialdrawer.Drawer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var noteAdapter: KNoteAdapter
     private lateinit var noteList: MutableList<Note>
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var result: Drawer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,29 +88,42 @@ class MainActivity : AppCompatActivity() {
             startActivityForResults(intent, RC_NEW_NOTE, this)
         }
 
-    }
+        result = drawer {
+            toolbar = this@MainActivity.toolbar
+            headerViewRes = R.layout.drawer_header
+            closeOnClick = true
+            showOnFirstLaunch = true
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.action_trash -> {
-                startActivity<TrashActivity>()
-                true
+            primaryItem("Home") {
+                icon = R.drawable.ic_home_black
             }
-            R.id.action_todo -> {
-                startActivity<ToDoActivity>()
-                true
+            primaryItem("TODO") {
+                icon = R.drawable.ic_todo
+                onClick { _ ->
+                    startActivity<ToDoActivity>()
+                    true
+                }
             }
-            R.id.action_about_app -> {
-                startActivity<AboutActivity>()
-                true
+            primaryItem(getString(R.string.trash)) {
+                icon = R.drawable.ic_delete_black
+                onClick { _ ->
+                    startActivity<TrashActivity>()
+                    true
+                }
             }
-            else -> super.onOptionsItemSelected(item)
+            primaryItem(getString(R.string.about)) {
+                icon = R.drawable.ic_info_black
+                onClick { _ ->
+                    startActivity<AboutActivity>()
+                    true
+                }
+            }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        result.saveInstanceState(outState)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -163,6 +178,13 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(EXTRA_POSITION, position)
         intent.putExtra(EXTRA_NOTE, note)
         startActivityForResults(intent, RC_UPDATE_NOTE, this)
+    }
+
+    override fun onBackPressed() {
+        when {
+            result.isDrawerOpen -> result.closeDrawer()
+            else -> super.onBackPressed()
+        }
     }
 
     override fun onDestroy() {

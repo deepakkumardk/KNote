@@ -42,7 +42,6 @@ fun AppCompatActivity.hideSoftKeyboard() {
 fun validateInput(title: String, content: String): Boolean =
         !(TextUtils.isEmpty(title.trim()) && TextUtils.isEmpty(content.trim()))
 
-
 fun View.setAlphaAnimation(dX: Float) {
     //set the alpha animation on swipe
     val alphaAnimation = 1.0f - Math.abs(dX) / this.width.toFloat()
